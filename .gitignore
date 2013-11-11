@@ -40,3 +40,4 @@ staticfiles
 *~
 *#
 *.db
+*.sqlite3
