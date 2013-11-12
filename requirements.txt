@@ -1,13 +1,16 @@
 Django==1.6
+Werkzeug==0.9.4
 argparse==1.2.1
 distribute==0.6.34
 dj-database-url==0.2.2
 dj-static==0.0.5
+django-extensions==1.2.5
 django-toolbelt==0.0.1
 epc==0.0.5
 gunicorn==18.0
 jedi==0.7.0
 psycopg2==2.5.1
 sexpdata==0.0.3
+six==1.4.1
 static==0.4
 wsgiref==0.1.2
