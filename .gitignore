@@ -38,6 +38,7 @@ nosetests.xml
 venv
 staticfiles
 *~
-*#
+\#*\#
+.\#*
 *.db
 *.sqlite3

@@ -29,6 +29,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'registration_defaults',
+    'registration',
     'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -36,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #'django.contrib.sites', TODO: enable, registration recommends it
 )
 
 MIDDLEWARE_CLASSES = (
@@ -64,8 +67,18 @@ DATABASES = {
 }
 
 if os.environ.has_key('DATABASE_URL'): # production environment
+    # DB config
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
+    # email config
+    EMAIL_HOST_USER = os.environ['SENDGRID_USERNAME']
+    EMAIL_HOST= 'smtp.sendgrid.net'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_PASSWORD = os.environ['SENDGRID_PASSWORD']
+else: # development environment
+    # print e-mails to the console instead of sending them
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Templates
 
@@ -96,3 +109,9 @@ STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = (
      os.path.join(BASE_DIR, 'static'),
 )
+
+# User registration
+
+from registration_defaults.settings import *
+
+ACCOUNT_ACTIVATION_DAYS = 7 # after this period, the account gets locked

@@ -1,8 +1,12 @@
 Dev
 --
-Install some prereqs. in Ubuntu.
+Install some prereqs. in Ubuntu...
 
     sudo apt-get install libpq-dev python-dev
+
+... or in OS X.
+
+    brew install postgresql
 
 Create your local virtualenv.
 
