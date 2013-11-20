@@ -1,3 +1,9 @@
-Hello cloudfleeters! Welcome to the landing page. Fancy, eh?
+{% extends "base.html" %}
 
-This is a template.
+{% block content %}
+
+<p>Hello cloudfleeters! Welcome to the landing page. Fancy, eh?</p>
+
+<p><a href="{% url 'dashboard' %}">dashboard</a></p>
+
+{% endblock %}

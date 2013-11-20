@@ -6,6 +6,7 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     url(r'^$', 'spire.views.home', name='home'),
+    url(r'^dashboard$', 'spire.views.dashboard', name='dashboard'),
     url(r'^account/', include('registration.backends.default.urls')),
     # Examples:
     # url(r'^blog/', include('blog.urls')),
