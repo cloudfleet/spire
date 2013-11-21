@@ -116,3 +116,8 @@ STATICFILES_DIRS = (
 from registration_defaults.settings import *
 
 ACCOUNT_ACTIVATION_DAYS = 7 # after this period, the account gets locked
+
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGIN_URL = '/account/login/'
+LOGOUT_URL = '/account/logout/'
+
