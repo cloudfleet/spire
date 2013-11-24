@@ -1,5 +1,12 @@
 Dev
 --
+
+Duralumin and Spire repositories have to be in the same folder e.g.
+
+    cloudfleet/
+	    duralumin/
+		spire/
+
 Install some prereqs. in Ubuntu...
 
     sudo apt-get install libpq-dev python-dev

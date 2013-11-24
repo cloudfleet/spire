@@ -1,5 +1,5 @@
 """
-WSGI config for test16 project.
+WSGI config for spire project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
