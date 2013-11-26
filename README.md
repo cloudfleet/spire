@@ -7,6 +7,10 @@ Duralumin and Spire repositories have to be in the same folder e.g.
 	    duralumin/
 		spire/
 
+Now enter the `spire` folder and issue
+
+    source scripts/bootstrap.sh
+
 Install some prereqs. in Ubuntu...
 
     sudo apt-get install libpq-dev python-dev
