@@ -9,11 +9,9 @@ CURDIR=`pwd`
 cd spire/templates
 if [ -d ../../duralumin ]; then
     # heroku deployment
-    ln -s ../../duralumin/app duralumin
+    ln -s ../../duralumin duralumin
 elif [ -d ../../../duralumin ]; then
     # dev deployment
-    ln -s ../../../duralumin/app duralumin
+    ln -s ../../../duralumin duralumin
 fi
 cd $CURDIR
-
-
