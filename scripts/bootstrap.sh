@@ -12,6 +12,8 @@ if [ -d ../../duralumin ]; then
     ln -s ../../duralumin duralumin
 elif [ -d ../../../duralumin ]; then
     # dev deployment
-    ln -s ../../../duralumin duralumin
+    # dist try-out
+    ln -s ../../../duralumin/dist duralumin
+    #TODO: for live development use app, not dist
 fi
 cd $CURDIR
