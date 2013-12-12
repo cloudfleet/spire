@@ -1,10 +1,11 @@
-Django==1.6
+Django==1.6.1
 Werkzeug==0.9.4
 argparse==1.2.1
 distribute==0.6.34
 dj-database-url==0.2.2
 dj-static==0.0.5
 django-extensions==1.2.5
+django-profiles==0.2
 django-registration==1.0
 django-registration-defaults==0.4.4
 django-toolbelt==0.0.1
