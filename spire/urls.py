@@ -9,6 +9,8 @@ urlpatterns = patterns(
     url(r'^$', 'spire.views.home', name='home'),
     url(r'^dashboard/$', 'spire.views.dashboard', name='dashboard'),
     url(r'^account/', include('registration.backends.default.urls')),
+    #TODO: put under api/ or something
+    url(r'^auth/$', 'spire.views.auth', name='auth'),
     #url(r'^static/(?P<path>.*)$', 'django.views.static.serve',
     #    {'document_root': settings.STATIC_ROOT}),
     # Examples:
