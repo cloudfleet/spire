@@ -27,6 +27,10 @@ elif [[ -d ../../../duralumin ]]; then
         echo "----> dev layout"
         # for live development use app, not dist
         ln -s ../../../duralumin/app duralumin
+        # css generated in .tmp, so we link that in static
+        mkdir -p $CURDIR/spire/static
+        cd $CURDIR/spire/static
+        ln -s ../../../duralumin/.tmp duralumin
     # dist try-out
     elif [[ $deploy = "prod" ]]; then
         echo "----> prod layout"

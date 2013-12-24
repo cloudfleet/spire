@@ -4,8 +4,8 @@ Dev
 Duralumin and Spire repositories have to be in the same folder e.g.
 
     cloudfleet/
-	    duralumin/
-		spire/
+        duralumin/
+        spire/
 
 Now enter the `spire` folder and issue
 
