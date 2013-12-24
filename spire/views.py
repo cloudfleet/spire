@@ -12,7 +12,6 @@ def home(request):
 @login_required
 def dashboard(request):
     user = request.user
-    msg = "hello, " + user.username + '. <a href="/account/logout/?next=''">logout</a>'
     return render(request, 'duralumin/dj-dashboard.html', {
         'user': user,
     })
