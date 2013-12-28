@@ -9,12 +9,19 @@ urlpatterns = patterns(
     url(r'^$', 'spire.views.home', name='home'),
     url(r'^dashboard/$', 'spire.views.dashboard', name='dashboard'),
     url(r'^account/', include('registration.backends.default.urls')),
+    url(r'^dashboard/blimp/', include('spire.apps.blimps.urls')),
     #TODO: put under api/ or something
     url(r'^auth/$', 'spire.views.auth', name='auth'),
-    #url(r'^static/(?P<path>.*)$', 'django.views.static.serve',
-    #    {'document_root': settings.STATIC_ROOT}),
     # Examples:
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
 )
+
+
+
+
+
+
+
+

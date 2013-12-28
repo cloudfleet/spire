@@ -43,6 +43,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'spire.middleware.RequireLoginMiddleware',
 )
 
 ROOT_URLCONF = 'spire.urls'
@@ -128,3 +129,11 @@ ACCOUNT_ACTIVATION_DAYS = 7 # after this period, the account gets locked
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGIN_URL = '/account/login/'
 LOGOUT_URL = '/account/logout/'
+
+# login_required urls
+
+LOGIN_REQUIRED_URLS = (
+    r'/dashboard/(.*)$',
+)
+
+LOGIN_REQUIRED_URLS_EXCEPTIONS = ()

@@ -3,6 +3,8 @@ from django.template import RequestContext, loader
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
+from spire.apps.blimps.models import Blimp
+
 def home(request):
     msg = 'Hello cloudfleeters! Welcome to the landing page. Fancy, eh?'
     template = loader.get_template('duralumin/dj-home.html')
@@ -12,8 +14,10 @@ def home(request):
 @login_required
 def dashboard(request):
     user = request.user
+    blimps = Blimp.objects.filter(owner=user)
     return render(request, 'duralumin/dj-dashboard.html', {
         'user': user,
+        'blimps': blimps,
     })
 
     #return HttpResponse(msg)
