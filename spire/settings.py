@@ -32,6 +32,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #'django.contrib.sites', TODO: enable, registration recommends it
+    'south',
     'spire.apps.blimps',
 )
 
