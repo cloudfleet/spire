@@ -13,6 +13,7 @@ def order_blimp(request):
             blimp = form.save(commit=False) # extract model object from form
             blimp.owner = request.user
             blimp.save() # save the new blimp in the DB
+            print(blimp.start()) # tell docker to start it
             print(blimp)
             return HttpResponseRedirect(reverse('spire.views.dashboard'))
     else:
