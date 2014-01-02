@@ -14,6 +14,9 @@ class Blimp(models.Model):
     def __unicode__(self):
         return str("{}'s {}".format(self.owner, self.subdomain))
 
+    # start blimp
+    # sudo docker run -d -p 1338:1337 kermit/hellonode
+
 class BlimpForm(ModelForm):
     class Meta:
         model = Blimp
