@@ -1,5 +1,5 @@
 from django.conf.urls import url, patterns
-import views
+from spire.apps.blimps import views
 
 urlpatterns = patterns(
     '',

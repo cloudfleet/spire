@@ -63,7 +63,7 @@ DATABASES = {
     }
 }
 
-if os.environ.has_key('DATABASE_URL'): # production environment
+if 'DATABASE_URL' in os.environ: # production environment
     DEBUG = True
     TEMPLATE_DEBUG = True
     ALLOWED_HOSTS = ['*']
