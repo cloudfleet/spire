@@ -14,7 +14,7 @@ def start_tunnel_once():
     # TODO: put exact details in settings.py
     forwarder = bgtunnel.open(ssh_user='kermit',
                               ssh_address='blimpyard.cloudfleet.io',
-                              host_port='4243', bind_port='4444',
+                              host_port=4243, bind_port=4444,
                               identity_file=os.path.expanduser('~/.ssh/blimpyard_rsa'))
 
 def start_tunnel():
