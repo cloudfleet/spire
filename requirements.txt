@@ -5,9 +5,9 @@ django-extensions==1.2.5
 django-registration==1.0
 django-registration-defaults==0.4.4
 dj-database-url==0.2.2
+-e git+git@github.com:kennethreitz/dj-static.git#egg=dj_static-master
 gunicorn==18.0
 psycopg2==2.5.1
-static3==0.5
 docker-py==0.2.3
 epc==0.0.5
 ipython==1.1.0
