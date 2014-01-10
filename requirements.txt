@@ -1,6 +1,7 @@
 Django==1.6.1
 South==0.8.4
 bgtunnel==0.3.4
+-e git+git@github.com:jmagnusson/bgtunnel.git#egg=bgtunnel-upstream
 django-extensions==1.2.5
 django-registration==1.0
 django-registration-defaults==0.4.4
