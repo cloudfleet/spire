@@ -1,12 +1,11 @@
 Django==1.6.1
 South==0.8.4
-bgtunnel==0.3.4
--e git+git@github.com:jmagnusson/bgtunnel.git#egg=bgtunnel-upstream
+-e git+https://github.com/jmagnusson/bgtunnel.git#egg=bgtunnel-upstream
 django-extensions==1.2.5
 django-registration==1.0
 django-registration-defaults==0.4.4
 dj-database-url==0.2.2
--e git+git@github.com:kennethreitz/dj-static.git#egg=dj_static-master
+-e git+https://github.com/kennethreitz/dj-static.git#egg=dj_static-master
 gunicorn==18.0
 psycopg2==2.5.1
 docker-py==0.2.3
