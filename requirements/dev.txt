@@ -1,0 +1,5 @@
+-r base.txt
+django-extensions==1.2.5
+epc==0.0.5
+ipython==1.1.0
+jedi==0.7.0

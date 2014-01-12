@@ -1,0 +1,8 @@
+Django==1.6.1
+South==0.8.4
+-e git+https://github.com/jmagnusson/bgtunnel.git#egg=bgtunnel-upstream
+django-registration==1.0
+django-registration-defaults==0.4.4
+dj-database-url==0.2.2
+-e git+https://github.com/kennethreitz/dj-static.git#egg=dj_static-master
+docker-py==0.2.3
