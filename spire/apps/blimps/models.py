@@ -6,24 +6,9 @@ import docker
 c = docker.Client(base_url='http://localhost:4444',
                   version='1.6',
                   timeout=10)
-import bgtunnel
+import plumbum
 import os
 import requests
-
-def start_tunnel_once():
-    # TODO: put exact details in settings.py
-    forwarder = bgtunnel.open(ssh_user='kermit',
-                              ssh_address='blimpyard.cloudfleet.io',
-                              host_port=4243, bind_port=4444,
-                              identity_file=os.path.expanduser('~/.ssh/blimpyard_rsa'))
-
-def start_tunnel():
-    try:
-        start_tunnel_once()
-    except bgtunnel.SSHTunnelError:
-        import time
-        time.sleep(3)
-        start_tunnel_once()
 
 class Blimp(models.Model):
     """a magical box that flies over to someone and provides secure,
@@ -37,15 +22,19 @@ class Blimp(models.Model):
     def __unicode__(self):
         return str("{}'s {}".format(self.owner, self.subdomain))
 
+    def blimpyard_connect(self):
+        keyfile = os.path.expanduser('~/.ssh/blimpyard_rsa')
+        self.blimpyard = plumbum.SshMachine('blimpyard.cloudfleet.io',
+                                            user='kermit',
+                                            keyfile=keyfile)
+        self.blimpyard_tunnel = self.blimpyard.tunnel(4444, 4243)
+
     # start blimp
     # sudo docker run -d -p 1338:1337 kermit/hellonode
     def start(self):
         # TODO: use with
-        try:
-            return c.images()
-        except requests.ConnectionError:
-            start_tunnel()
-            return c.images()
+        self.blimpyard_connect()
+        return c.images()
 
 class BlimpForm(ModelForm):
     class Meta:
