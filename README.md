@@ -1,6 +1,9 @@
-Dev
---
+Deployment
+==========
+*So, you'd like to deploy Spire? Be my guest...*
 
+Dev
+---
 Duralumin and Spire repositories have to be in the same folder e.g.
 
     cloudfleet/
@@ -10,14 +13,6 @@ Duralumin and Spire repositories have to be in the same folder e.g.
 Now enter the `spire` folder and issue
 
     source scripts/bootstrap.sh
-
-Install some prereqs. in Ubuntu...
-
-    sudo apt-get install libpq-dev python-dev
-
-... or in OS X.
-
-    brew install postgresql
 
 Create your local virtualenv.
 
@@ -29,7 +24,13 @@ Activate it.
 
 Install the dependencies.
 
-    pip install -r requirements.txt
+    pip install -r requirements/dev.txt
+
+A [docker](http://www.docker.io/) daemon is expected to be available.
+Install it and make it listen to HTTP connections
+by editing */etc/default/docker*:
+
+    DOCKER_OPTS="-H unix:///var/run/docker.sock -H tcp://localhost:4243"
 
 Start the dev server.
 
@@ -41,5 +42,19 @@ use Werkzeug.
     python manage.py runserver_plus
 
 Rock'n'roll!
+
+Production
+----------
+Similar to dev, but you need PostgreSQL in Ubuntu...
+
+    sudo apt-get install libpq-dev
+
+... or in OS X.
+
+    brew install postgresql
+
+Install the production dependencies.
+
+    pip install -r requirements/prod.txt
 
 [runserver_plus]: http://django-extensions.readthedocs.org/en/latest/runserver_plus.html
