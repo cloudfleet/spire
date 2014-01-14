@@ -31,6 +31,7 @@ class Blimp(models.Model):
     # TODO: random number as serial
     subdomain = models.CharField(max_length=100)
     owner = models.ForeignKey(User)
+    port = models.IntegerField(null=True, blank=True, default=None)
 
     def __unicode__(self):
         return str("{}'s {}".format(self.owner, self.subdomain))
@@ -49,7 +50,7 @@ class Blimp(models.Model):
             c.start(container, publish_all_ports=True)
             info = c.inspect_container(container)
             self.port = info['NetworkSettings']['Ports']['1337'][0]['HostPort']
-            #self.save()
+            self.save(update_fields=['port'])
             print('port is ' + str(self.port))
             return container
 
@@ -61,7 +62,7 @@ class Blimp(models.Model):
 
     def url(self):
         # TODO: read from DB
-        container_url = 'blimpyard.cloudfleet.io:1338'
+        container_url = 'blimpyard.cloudfleet.io:' + str(self.port)
         return container_url
 
 class BlimpForm(ModelForm):
