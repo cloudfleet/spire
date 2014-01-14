@@ -15,7 +15,7 @@
       <ul>
       {% for blimp in blimps %}
         <li>{{ blimp.subdomain }} <a href="{% url 'delete_blimp' blimp.id %}">delete</a></li>
-        <p>debug output: {{ blimp.start }}</p>
+        <p><a href="{{ blimp.url }}">board your blimp</a></p>
       {% endfor %}
       </ul>
 

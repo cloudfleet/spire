@@ -28,10 +28,27 @@ class Blimp(models.Model):
     # start blimp
     # sudo docker run -d -p 1338:1337 kermit/hellonode
     def start(self):
-        # TODO: use with
-        #self.blimpyard_connect()
+        """start the docker container"""
         with _blimpyard.tunnel(4444,4243):
-            return _docker.images()
+            # we get back the container id
+            # TODO: something is still wrong with the container port config
+            container = _docker.create_container('kermit/hellonode',
+                                                 name=self.subdomain)
+            blimp_port = 1338
+            _docker.start(container, port_bindings={1337: ('0.0.0.0', blimp_port)})
+            # TODO: store container info in DB
+            return str(container)
+
+    def stop(self):
+        """stop the container"""
+        with _blimpyard.tunnel(4444,4243):
+            _docker.stop(self.subdomain)
+            _docker.remove_container(self.subdomain)
+
+    def url(self):
+        # TODO: read from DB
+        container_url = 'blimpyard.cloudfleet.io:1338'
+        return container_url
 
 class BlimpForm(ModelForm):
     class Meta:

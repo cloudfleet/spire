@@ -25,5 +25,6 @@ def order_blimp(request):
 def delete_blimp(request, pk):
     blimp = get_object_or_404(Blimp, pk=pk)
     if blimp.owner == request.user:
+        blimp.stop() # stop the container
         blimp.delete()
     return HttpResponseRedirect(reverse('spire.views.dashboard'))
