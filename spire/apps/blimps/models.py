@@ -62,7 +62,7 @@ class Blimp(models.Model):
 
     def url(self):
         # TODO: read from DB
-        container_url = 'blimpyard.cloudfleet.io:' + str(self.port)
+        container_url = 'http://blimpyard.cloudfleet.io:' + str(self.port)
         return container_url
 
 class BlimpForm(ModelForm):

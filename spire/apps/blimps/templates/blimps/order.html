@@ -2,10 +2,13 @@
 
 {% block content %}
 
-<form action="{% url 'order_blimp' %}" method="POST">
+
+<form class="form-horizontal" action="{% url 'order_blimp' %}" method="POST">
   {% csrf_token %}
   {{ form.as_p }}
-  <input type="submit" value="Submit" />
+  <input type="submit" value="Submit" class="btn btn-success" />
 </form>
+
+
 
 {% endblock %}

@@ -12,10 +12,19 @@
 
     {% if blimps %}
 
-      <ul>
+      <ul class="list-group">
       {% for blimp in blimps %}
-        <li>{{ blimp.subdomain }} <a href="{% url 'delete_blimp' blimp.id %}">delete</a></li>
-        <p><a href="{{ blimp.url }}">board your blimp</a></p>
+        <li class="list-group-item">{{ blimp.subdomain }}
+          <ul class="nav-pills pull-right list-unstyled">
+            <li>
+              <a class="btn btn-xs btn-success" href="{{ blimp.url }}" target="_newtab">launch</a>
+            </li>
+            <li>
+              <a class="btn btn-xs btn-danger" href="{% url 'delete_blimp' blimp.id %}">delete</a>
+            </li>
+          </ul>
+        </li>
+        <p></p>
       {% endfor %}
       </ul>
 

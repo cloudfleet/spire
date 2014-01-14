@@ -26,11 +26,24 @@ Install the dependencies.
 
     pip install -r requirements/dev.txt
 
+If this is your first time run, initialize the DB.
+
+    ./manage.py syncdb
+
+On any other `git pull` you should check if the DB schema needs an update.
+
+    ./manage.py migrate
+
 A [docker](http://www.docker.io/) daemon is expected to be available.
 Install it and make it listen to HTTP connections
 by editing */etc/default/docker*:
 
     DOCKER_OPTS="-H unix:///var/run/docker.sock -H tcp://localhost:4243"
+
+An ssh tunnel to blimpyard should be established automatically, but you can
+also (your public key is in blimpyard's allowed hosts, right?) do it manually.
+
+    ssh -o BatchMode=yes -i ~/.ssh/blimpyard_rsa -f -N -L 4444:localhost:4243 kermit@blimpyard.cloudfleet.io
 
 Start the dev server.
 
@@ -39,7 +52,7 @@ Start the dev server.
 Or optionally if you like [interactive debugging on exceptions][runserver_plus]
 use Werkzeug.
 
-    python manage.py runserver_plus
+    ./manage.py runserver_plus
 
 Rock'n'roll!
 
