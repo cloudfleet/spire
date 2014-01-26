@@ -40,16 +40,17 @@ class Blimp(models.Model):
 
     # start blimp
     # sudo docker run -d -p 1338:1337 kermit/hellonode
+    # sudo docker run -d -p 3001:3000 kermit/simple-ldap
     def start(self):
         """start the docker container"""
         with blimpyard_tunnel():
             # we get back the container id
-            container = c.create_container('kermit/hellonode',
+            container = c.create_container('kermit/simple-ldap',
                                             name=self.subdomain,
-                                            ports=[1337])
+                                            ports=[3000])
             c.start(container, publish_all_ports=True)
             info = c.inspect_container(container)
-            self.port = info['NetworkSettings']['Ports']['1337'][0]['HostPort']
+            self.port = info['NetworkSettings']['Ports']['3000'][0]['HostPort']
             self.save(update_fields=['port'])
             print('port is ' + str(self.port))
             return container
