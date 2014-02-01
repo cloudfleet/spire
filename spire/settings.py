@@ -138,3 +138,14 @@ LOGIN_REQUIRED_URLS = (
 )
 
 LOGIN_REQUIRED_URLS_EXCEPTIONS = ()
+
+
+# Cloudfleet-specific settings
+#-----------------------------
+
+# path to the private ssh used to connect to blimpyard (docker, pagekite)
+BLIMPYARD_KEY = '~/.ssh/blimpyard_rsa'
+BLIMPYARD_URL = 'blimpyard.cloudfleet.io'
+BLIMPYARD_USER = 'kermit'
+DOCKER_PORT = 4243
+DOCKER_IMAGE = 'cloudfleet/simple-ldap' # the image to build the container from

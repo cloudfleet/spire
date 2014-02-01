@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
+from spire import settings
+
 import docker
 c = docker.Client(base_url='http://localhost:4444',
                   version='1.6',
@@ -13,11 +15,14 @@ from contextlib import contextmanager
 
 @contextmanager
 def blimpyard_tunnel():
-    _keyfile = os.path.expanduser('~/.ssh/blimpyard_rsa')
-    _url = 'blimpyard.cloudfleet.io'
+    keyfile = os.path.expanduser(settings.BLIMPYARD_KEY)
+    url = settings.BLIMPYARD_URL
+    user = settings.BLIMPYARD_USER
+    docker_port = settings.DOCKER_PORT
+    local_port = 4444
 
-    with SshMachine(_url, user='kermit', keyfile=_keyfile) as _blimpyard_host:
-        with _blimpyard_host.tunnel(4444,4243):
+    with SshMachine(url, user=user, keyfile=keyfile) as blimpyard_host:
+        with blimpyard_host.tunnel(local_port, docker_port):
             try:
                 yield
             finally:
@@ -45,7 +50,7 @@ class Blimp(models.Model):
         """start the docker container"""
         with blimpyard_tunnel():
             # we get back the container id
-            container = c.create_container('kermit/simple-ldap',
+            container = c.create_container(settings.DOCKER_IMAGE,
                                             name=self.subdomain,
                                             ports=[3000])
             c.start(container, publish_all_ports=True)
@@ -63,7 +68,7 @@ class Blimp(models.Model):
 
     def url(self):
         # TODO: read from DB
-        container_url = 'http://blimpyard.cloudfleet.io:' + str(self.port)
+        container_url = 'http://{}:{}'.format(settings.BLIMPYARD_URL, self.port)
         return container_url
 
 class BlimpForm(ModelForm):
