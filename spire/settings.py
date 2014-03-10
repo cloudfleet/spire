@@ -79,6 +79,9 @@ if 'DATABASE_URL' in os.environ: # production environment
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
     EMAIL_HOST_PASSWORD = os.environ['SENDGRID_PASSWORD']
+
+    # add extra apps
+    INSTALLED_APPS = INSTALLED_APPS + ('raven.contrib.django.raven_compat',)
 else: # development environment
     DEBUG = True
     TEMPLATE_DEBUG = True
