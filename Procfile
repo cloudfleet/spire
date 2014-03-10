@@ -1,1 +1,1 @@
-web: gunicorn spire.wsgi
+web: newrelic-admin run-program gunicorn spire.wsgi
