@@ -6,3 +6,4 @@ dj-database-url==0.2.2
 -e git+https://github.com/kennethreitz/dj-static.git#egg=dj_static-master
 docker-py==0.2.3
 plumbum==1.4.0
+django-celery==3.1.9

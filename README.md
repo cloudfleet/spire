@@ -14,6 +14,8 @@ Now enter the `spire` folder and issue
 
     source scripts/bootstrap.sh
 
+### Fetch dependencies
+
 Create your local virtualenv.
 
     virtualenv venv --distribute
@@ -26,13 +28,21 @@ Install the dependencies.
 
     pip install -r requirements/dev.txt
 
-If this is your first time run, initialize the DB.
+### Celery
 
-    ./manage.py syncdb
+As a Celery broker we need RabbitMQ - in Ubuntu...
 
-On any other `git pull` you should check if the DB schema needs an update.
+    sudo apt-get install rabbitmq-server
 
-    ./manage.py migrate
+... or in OS X.
+
+    brew install rabbitmq
+
+Start a worker in the background.
+
+    celery -A spire worker -l info
+
+### Docker
 
 A [docker](http://www.docker.io/) daemon is expected to be available.
 Install it and make it listen to HTTP connections
@@ -45,6 +55,18 @@ also (your public key is in blimpyard's allowed hosts, right?) do it manually.
 
     ssh -o BatchMode=yes -i ~/.ssh/blimpyard_rsa -f -N -L 4444:localhost:4243 kermit@blimpyard.cloudfleet.io
 
+### Sync the DB
+
+If this is your first time run, initialize the DB.
+
+    ./manage.py syncdb
+
+On any other `git pull` you should check if the DB schema needs an update.
+
+    ./manage.py migrate
+
+### Rock'n'roll!
+
 Start the dev server.
 
     foreman start
@@ -54,7 +76,6 @@ use Werkzeug.
 
     ./manage.py runserver_plus
 
-Rock'n'roll!
 
 Production
 ----------

@@ -22,6 +22,7 @@ SECRET_KEY = 'b=-s+lqg2ghsgm9ikw)3+sv3bx-!tc6tr%h9cv4!%&7-2o%nt$'
 # Application definition
 
 INSTALLED_APPS = (
+    'djcelery',
     'registration_defaults',
     'registration',
     'django_extensions',
@@ -141,6 +142,10 @@ LOGIN_REQUIRED_URLS = (
 )
 
 LOGIN_REQUIRED_URLS_EXCEPTIONS = ()
+
+# Celery
+CELERY_RESULT_BACKEND='djcelery.backends.cache:CacheBackend'
+#CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
 
 # Cloudfleet-specific settings
