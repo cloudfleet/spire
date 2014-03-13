@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
 from .models import Blimp, BlimpForm
-from spire.apps.blimps.tasks import start_blimp
+from spire.apps.blimps.tasks import start_blimp, stop_blimp
 
 # Create your views here.
 def order_blimp(request):
@@ -14,9 +14,8 @@ def order_blimp(request):
             blimp = form.save(commit=False) # extract model object from form
             blimp.owner = request.user
             blimp.save() # save the new blimp in the DB
-            # start celery task
-            start_blimp.delay(blimp)
-            #print(blimp.start()) # tell docker to start it
+            start_blimp.delay(blimp) # start celery task
+            #TODO: push some notification to the client when the task's done
             print(blimp)
             return HttpResponseRedirect(reverse('spire.views.dashboard'))
     else:
@@ -28,6 +27,6 @@ def order_blimp(request):
 def delete_blimp(request, pk):
     blimp = get_object_or_404(Blimp, pk=pk)
     if blimp.owner == request.user:
-        #blimp.stop() # stop the container
-        blimp.delete()
+        stop_blimp.delay(blimp)
+        #TODO: push some notification to the client when the task's done
     return HttpResponseRedirect(reverse('spire.views.dashboard'))
