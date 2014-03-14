@@ -44,3 +44,4 @@ staticfiles
 *.sqlite3
 spire/templates/duralumin
 spire/static/duralumin
+node_modules
