@@ -50,6 +50,13 @@ by editing */etc/default/docker*:
 
     DOCKER_OPTS="-H unix:///var/run/docker.sock -H tcp://localhost:4243"
 
+You need to create an SSH keypair and copy it to the server that hosts
+Docker containers - blimpyard. Then specify the path
+to it in `spire/settings.py` (default `~/.ssh/blimpyard_rsa`).
+
+    ssh-keygen
+    ssh-copy-id -i ~/.ssh/blimpyard_rsa username@blimpyard.cloudfleet.io
+
 An ssh tunnel to blimpyard should be established automatically, but you can
 also (your public key is in blimpyard's allowed hosts, right?) do it manually.
 
