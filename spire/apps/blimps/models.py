@@ -1,6 +1,9 @@
+import logging
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+import requests
 
 from spire import settings
 
@@ -15,7 +18,10 @@ from contextlib import contextmanager
 
 @contextmanager
 def blimpyard_tunnel():
-    keyfile = os.path.expanduser(settings.BLIMPYARD_KEY)
+    try:
+        keyfile = os.path.expanduser(settings.BLIMPYARD_KEY)
+    except AttributeError:
+        keyfile = None
     url = settings.BLIMPYARD_URL
     user = settings.BLIMPYARD_USER
     docker_port = settings.DOCKER_PORT
@@ -24,7 +30,7 @@ def blimpyard_tunnel():
     with SshMachine(url, user=user, keyfile=keyfile) as blimpyard_host:
         with blimpyard_host.tunnel(local_port, docker_port):
             try:
-                yield
+                yield blimpyard_host
             finally:
                 pass
 
@@ -48,23 +54,36 @@ class Blimp(models.Model):
     # sudo docker run -d -p 3001:3000 kermit/simple-ldap
     def start(self):
         """start the docker container"""
-        with blimpyard_tunnel():
+        with blimpyard_tunnel() as rem:
             # we get back the container id
-            container = c.create_container(settings.DOCKER_IMAGE,
-                                            name=self.subdomain,
-                                            ports=[3000])
-            c.start(container, publish_all_ports=True)
-            info = c.inspect_container(container)
-            self.port = info['NetworkSettings']['Ports']['3000'][0]['HostPort']
+            logging.info('* starting container')
+            try:
+                container = c.create_container(settings.DOCKER_IMAGE,
+                                               name=self.subdomain,
+                                               ports=[3000])
+                c.start(container, publish_all_ports=True)
+            except requests.exceptions.ConnectionError:
+                container = None
+            else:
+                logging.info('* started container')
+                info = c.inspect_container(container)
+                self.port = info['NetworkSettings']['Ports']['3000'][0]['HostPort']
             self.save(update_fields=['port'])
             print('port is ' + str(self.port))
+            # restart pagekite frontend
+            # - call the Flask service that restarts pagekite
+            logging.info('* calling pagekite restarter')
+            rem['/usr/bin/wget localhost:5000 -o /dev/null']()
             return container
 
     def stop(self):
         """stop the container"""
         with blimpyard_tunnel():
-            c.stop(self.subdomain)
-            c.remove_container(self.subdomain)
+            try:
+                c.stop(self.subdomain)
+                c.remove_container(self.subdomain)
+            except requests.exception.ConnectionError:
+                pass
 
     def url(self):
         # TODO: read from DB

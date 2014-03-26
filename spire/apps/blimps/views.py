@@ -20,6 +20,8 @@ def order_blimp(request):
             return HttpResponseRedirect(reverse('spire.views.dashboard'))
     else:
         form = BlimpForm()
+        #import ipdb; ipdb.set_trace()
+        form.fields['subdomain'].widget.attrs['autofocus'] = 'autofocus'
     from django.http import HttpResponse
     #return HttpResponse('fill out')
     return render(request, 'blimps/order.html', {'form': form})

@@ -1,0 +1,2 @@
+#/backends domain=<protocol>:<fqdn>:<sharedsecret>
+#domain=http:example.blimpyard.cloudfleet.io:YOURSECRET

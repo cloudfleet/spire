@@ -45,14 +45,20 @@ Start a worker in the background.
 ### Docker
 
 A [docker](http://www.docker.io/) daemon is expected to be available.
-Install it and make it listen to HTTP connections
-by editing */etc/default/docker*:
+Install it
+
+    curl -s https://get.docker.io/ubuntu/ | sudo sh
+
+and make it listen to HTTP connections
+by editing */etc/default/docker* and restarting the service
+(`sudo service docker restart`):
 
     DOCKER_OPTS="-H unix:///var/run/docker.sock -H tcp://localhost:4243"
 
+Docker can also run on a different server.
 You need to create an SSH keypair and copy it to the server that hosts
 Docker containers - blimpyard. Then specify the path
-to it in `spire/settings.py` (default `~/.ssh/blimpyard_rsa`).
+to it in `local_settings.py` (such as `~/.ssh/blimpyard_rsa`).
 
     ssh-keygen
     ssh-copy-id -i ~/.ssh/blimpyard_rsa username@blimpyard.cloudfleet.io

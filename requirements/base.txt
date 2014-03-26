@@ -7,3 +7,5 @@ dj-database-url==0.2.2
 docker-py==0.2.3
 plumbum==1.4.0
 django-celery==3.1.9
+Flask==0.10.1
+requests==2.2.1

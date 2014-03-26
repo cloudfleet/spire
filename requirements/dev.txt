@@ -4,3 +4,4 @@ Werkzeug==0.9.4
 epc==0.0.5
 ipython==1.1.0
 jedi==0.7.0
+ipdb==0.8

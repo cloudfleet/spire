@@ -146,14 +146,37 @@ LOGIN_REQUIRED_URLS_EXCEPTIONS = ()
 # Celery
 CELERY_RESULT_BACKEND='djcelery.backends.cache:CacheBackend'
 #CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+# run in same thread for development
+#CELERY_ALWAYS_EAGER = True
 
 
 # Cloudfleet-specific settings
 #-----------------------------
 
 # path to the private ssh used to connect to blimpyard (docker, pagekite)
-BLIMPYARD_KEY = '~/.ssh/blimpyard_rsa'
-BLIMPYARD_URL = 'blimpyard.cloudfleet.io'
-BLIMPYARD_USER = 'kermit'
+BLIMPYARD_KEY = None
+BLIMPYARD_URL = 'localhost'
+BLIMPYARD_USER = None
 DOCKER_PORT = 4243
 DOCKER_IMAGE = 'cloudfleet/simple-ldap' # the image to build the container from
+
+# logging configuration
+import logging
+
+LOG_PATH, LOG_FILENAME = '.', 'spire.log'
+LOG_LEVEL = logging.INFO
+LOG_MAX = 10**6
+
+logging.basicConfig(
+    level=LOG_LEVEL,
+    format='%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s',
+    handlers=[
+        logging.handlers.RotatingFileHandler(
+            os.path.join(LOG_PATH, LOG_FILENAME), maxBytes=LOG_MAX
+        ), # file output
+        logging.StreamHandler() # stdout
+    ]
+)
+
+# to override these settings, create local_settings.py and run as
+#     ./manage.py --settings=local_settings runserver

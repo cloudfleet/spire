@@ -1,0 +1,7 @@
+#/ Miscellaneous settings
+logfile=/var/log/pagekite/pagekite.log
+buffers=512
+isfrontend
+#ports=80,443,6666
+ports=6666
+protos=http,https,websocket
