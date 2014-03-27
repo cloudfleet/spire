@@ -1,1 +1,21 @@
+-e git+https://github.com/kennethreitz/dj-static.git@e79582483a976c76511244b3f236f7c68991e1ae#egg=dj_static-dev
 -r requirements/prod.txt
+amqp==1.4.4
+anyjson==0.3.3
+billiard==3.3.0.16
+celery==3.1.10
+distribute==0.7.3
+itsdangerous==0.23
+Jinja2==2.7.2
+kombu==3.0.14
+MarkupSafe==0.19
+minidns==0.3
+mock==1.0.1
+pip-tools==0.3.4
+pytz==2014.2
+sexpdata==0.0.3
+six==1.6.1
+static3==0.5
+Twisted==13.2.0
+urllib3==1.8
+zope.interface==4.1.1

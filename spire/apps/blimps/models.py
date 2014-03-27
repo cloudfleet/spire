@@ -47,7 +47,13 @@ class Blimp(models.Model):
     def __unicode__(self):
         return str("{}'s {}".format(self.owner, self.subdomain))
 
-    # TODO: put these two into some async job queue (celery?)
+    def generate_backendsrc(self, path):
+        with open(path, 'w') as f:
+            for blimp in Blimp.objects.all():
+                f.write(
+                    'domain=http:{}.blimpyard.cloudfleet.io:YOURSECRET\n'
+                    .format(blimp.subdomain)
+                )
 
     # start blimp
     # sudo docker run -d -p 1338:1337 kermit/hellonode
@@ -55,24 +61,32 @@ class Blimp(models.Model):
     def start(self):
         """start the docker container"""
         with blimpyard_tunnel() as rem:
-            # we get back the container id
-            logging.info('* starting container')
+            # start container
+            logging.info('1. start container')
             try:
+                # we get back the container id
                 container = c.create_container(settings.DOCKER_IMAGE,
                                                name=self.subdomain,
                                                ports=[3000])
                 c.start(container, publish_all_ports=True)
             except requests.exceptions.ConnectionError:
+                logging.info(" - didn't start: connection error")
                 container = None
             else:
-                logging.info('* started container')
+                logging.info(' - container started')
                 info = c.inspect_container(container)
                 self.port = info['NetworkSettings']['Ports']['3000'][0]['HostPort']
             self.save(update_fields=['port'])
             print('port is ' + str(self.port))
+
+            # update backends.rc
+            backendsrc_path = 'backends.rc'
+            self.generate_backendsrc(backendsrc_path)
+            rem.upload(backendsrc_path, '/etc/pagekite/backends.rc')
+
             # restart pagekite frontend
+            logging.info('3. restart pagekite')
             # - call the Flask service that restarts pagekite
-            logging.info('* calling pagekite restarter')
             rem['/usr/bin/wget localhost:5000 -o /dev/null']()
             return container
 
