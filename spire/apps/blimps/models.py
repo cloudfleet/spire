@@ -1,4 +1,5 @@
 import logging
+import subprocess
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -34,6 +35,15 @@ def blimpyard_tunnel():
             finally:
                 pass
 
+def get_pagekite_frontend():
+    if settings.BLIMPYARD_URL == 'localhost':
+        cmd = "./scripts/docker_host_ip.sh"
+        url = subprocess.check_output(cmd).decode().rstrip()
+    else:
+        url = settings.BLIMPYARD_URL
+    url = url + ':' + str(settings.BLIMPYARD_PAGEKITE_PORT)
+    return url
+
 class Blimp(models.Model):
     """a magical box that flies over to someone and provides secure,
     web-based e-mail and file syncing
@@ -50,9 +60,10 @@ class Blimp(models.Model):
     def generate_backendsrc(self, path):
         with open(path, 'w') as f:
             for blimp in Blimp.objects.all():
+                # TODO: use randomly generated password
                 f.write(
-                    'domain=http:{}.blimpyard.cloudfleet.io:YOURSECRET\n'
-                    .format(blimp.subdomain)
+                    'domain=http:{}:password\n'
+                    .format(blimp.host())
                 )
 
     # start blimp
@@ -64,8 +75,20 @@ class Blimp(models.Model):
             # start container
             logging.info('1. start container')
             try:
+                pagekite_frontend = get_pagekite_frontend()
+                start_script = '$HOME/cockpit/scripts/start.sh'
+                secret = 'password' # TODO: randomly generate
+                cmd = '{} {} {} {}'.format(
+                    start_script,
+                    self.host(),
+                    secret,
+                    pagekite_frontend
+                )
+                logging.info(' - start command: ' + cmd)
+                # test.localhost password 172.17.42.1:60666
                 # we get back the container id
                 container = c.create_container(settings.DOCKER_IMAGE,
+                                               command=cmd,
                                                name=self.subdomain,
                                                ports=[3000])
                 c.start(container, publish_all_ports=True)
@@ -73,13 +96,14 @@ class Blimp(models.Model):
                 logging.info(" - didn't start: connection error")
                 container = None
             else:
-                logging.info(' - container started')
+                logging.info(' - {} container started'.format(settings.DOCKER_IMAGE))
                 info = c.inspect_container(container)
                 self.port = info['NetworkSettings']['Ports']['3000/tcp'][0]['HostPort']
                 self.save(update_fields=['port'])
-                logging.info('- port is: ' + str(self.port))
+                logging.info('- docker exposed url: ' + self.url_exposed())
 
             # update backends.rc
+            logging.info('2. update backends.rc')
             backendsrc_path = 'backends.rc'
             self.generate_backendsrc(backendsrc_path)
             rem.upload(backendsrc_path, '/etc/pagekite.d/20_backends.rc')
@@ -99,9 +123,26 @@ class Blimp(models.Model):
             except requests.exception.ConnectionError:
                 pass
 
-    def url(self):
-        # TODO: read from DB
+    def url_exposed(self):
+        """as exposed through Docker"""
         container_url = 'http://{}:{}'.format(settings.BLIMPYARD_URL, self.port)
+        return container_url
+
+    def host(self):
+        """just host (no port)"""
+        # TODO: read from DB
+        container_host = '{}.{}'.format(
+            self.subdomain, settings.BLIMPYARD_URL
+        )
+        return container_host
+
+    def url(self):
+        """full url for external access"""
+        # TODO: read from DB
+        container_url = 'http://{}.{}:{}'.format(
+            self.subdomain, settings.BLIMPYARD_URL,
+            settings.BLIMPYARD_PAGEKITE_PORT
+        )
         return container_url
 
 class BlimpForm(ModelForm):

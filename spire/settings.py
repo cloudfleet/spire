@@ -64,6 +64,7 @@ DATABASES = {
 }
 
 if 'DATABASE_URL' in os.environ: # production environment
+    DEPLOYMENT = 'production'
     DEBUG = True
     TEMPLATE_DEBUG = True
     ALLOWED_HOSTS = ['*']
@@ -83,11 +84,13 @@ if 'DATABASE_URL' in os.environ: # production environment
     # add extra apps
     INSTALLED_APPS = INSTALLED_APPS + ('raven.contrib.django.raven_compat',)
 else: # development environment
+    DEPLOYMENT = 'development'
     DEBUG = True
     TEMPLATE_DEBUG = True
     # print e-mails to the console instead of sending them
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
+    CELERY_ALWAYS_EAGER = True # run tasks in same thread for development
 
 # Templates
 
@@ -146,17 +149,22 @@ LOGIN_REQUIRED_URLS_EXCEPTIONS = ()
 # Celery
 CELERY_RESULT_BACKEND='djcelery.backends.cache:CacheBackend'
 #CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
-# run in same thread for development
-CELERY_ALWAYS_EAGER = True
 
 
 # Cloudfleet-specific settings
 #-----------------------------
 
 # path to the private ssh used to connect to blimpyard (docker, pagekite)
-BLIMPYARD_KEY = None
-BLIMPYARD_URL = 'localhost'
-BLIMPYARD_USER = None
+if DEPLOYMENT == 'development':
+    BLIMPYARD_KEY = None
+    BLIMPYARD_URL = 'localhost'
+    BLIMPYARD_USER = None
+    BLIMPYARD_PAGEKITE_PORT = 60666
+elif DEPLOYMENT == 'production':
+    BLIMPYARD_KEY = '~/.ssh/blimpyard_rsa'
+    BLIMPYARD_URL = 'blimpyard.cloudfleet.io'
+    BLIMPYARD_USER = 'kermit'
+    BLIMPYARD_PAGEKITE_PORT = 80
 DOCKER_PORT = 4243
 DOCKER_IMAGE = 'cloudfleet/cockpit' # the image to build the container from
 
