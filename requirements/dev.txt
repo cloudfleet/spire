@@ -5,3 +5,4 @@ ipdb==0.8
 ipython==1.2.1
 jedi==0.7.0
 Werkzeug==0.9.4
+pip-tools==0.3.4
