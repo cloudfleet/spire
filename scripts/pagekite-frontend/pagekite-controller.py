@@ -5,11 +5,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    #cmd = 'sudo ./scripts/pagekite-frontend/restart_pagekite.sh'
-    #cmd = 'sudo /home/kermit/projekti/git/cloudfleet/spire/scripts/pagekite-frontend/restart_pagekite.sh'
-    #cmd = cmd.splite(' ')
-    #subprocess.Popen(cmd)
-    cmd = 'sudo /home/kermit/projekti/git/cloudfleet/spire/scripts/pagekite-frontend/restart_pagekite.sh'
+    cmd = 'sudo ./scripts/pagekite-frontend/restart_pagekite.sh'
     subprocess.Popen(cmd.split(' '))
     return "Sent restart command!"
 

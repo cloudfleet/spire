@@ -11,5 +11,4 @@ def start_blimp(blimp):
 @shared_task
 def stop_blimp(blimp):
     blimp.stop() # stop the container
-    blimp.delete()
     return

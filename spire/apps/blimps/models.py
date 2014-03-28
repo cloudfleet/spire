@@ -75,14 +75,14 @@ class Blimp(models.Model):
             else:
                 logging.info(' - container started')
                 info = c.inspect_container(container)
-                self.port = info['NetworkSettings']['Ports']['3000'][0]['HostPort']
-            self.save(update_fields=['port'])
-            print('port is ' + str(self.port))
+                self.port = info['NetworkSettings']['Ports']['3000/tcp'][0]['HostPort']
+                self.save(update_fields=['port'])
+                logging.info('- port is: ' + str(self.port))
 
             # update backends.rc
             backendsrc_path = 'backends.rc'
             self.generate_backendsrc(backendsrc_path)
-            rem.upload(backendsrc_path, '/etc/pagekite/backends.rc')
+            rem.upload(backendsrc_path, '/etc/pagekite.d/20_backends.rc')
 
             # restart pagekite frontend
             logging.info('3. restart pagekite')

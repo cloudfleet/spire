@@ -1,4 +1,4 @@
-Deployment
+eployment
 ==========
 *So, you'd like to deploy Spire? Be my guest...*
 

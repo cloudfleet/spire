@@ -16,7 +16,6 @@ def order_blimp(request):
             blimp.save() # save the new blimp in the DB
             start_blimp.delay(blimp) # start celery task
             #TODO: push some notification to the client when the task's done
-            print(blimp)
             return HttpResponseRedirect(reverse('spire.views.dashboard'))
     else:
         form = BlimpForm()
@@ -31,4 +30,5 @@ def delete_blimp(request, pk):
     if blimp.owner == request.user:
         stop_blimp.delay(blimp)
         #TODO: push some notification to the client when the task's done
+        blimp.delete()
     return HttpResponseRedirect(reverse('spire.views.dashboard'))
