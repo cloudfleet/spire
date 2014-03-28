@@ -25,7 +25,6 @@ INSTALLED_APPS = (
     'djcelery',
     'registration_defaults',
     'registration',
-    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -88,6 +87,7 @@ else: # development environment
     TEMPLATE_DEBUG = True
     # print e-mails to the console instead of sending them
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
 
 # Templates
 
