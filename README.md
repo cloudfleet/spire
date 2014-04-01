@@ -44,6 +44,8 @@ Start a worker in the background.
 
 ### Docker
 
+#### Ubuntu
+
 A [docker](http://www.docker.io/) daemon is expected to be available.
 Install it
 
@@ -54,6 +56,22 @@ by editing */etc/default/docker* and restarting the service
 (`sudo service docker restart`):
 
     DOCKER_OPTS="-H unix:///var/run/docker.sock -H tcp://localhost:4243"
+
+#### OS X
+
+On OS X you would install it by downloading
+[VirtualBox](https://www.virtualbox.org/wiki/Downloadshttps://www.virtualbox.org/wiki/Downloads),
+installing the daemon and the client
+
+    brew install docker boot2docker
+
+fThen editing your .bashrc/.zshrc by adding
+`export DOCKER_HOST=tcp://127.0.0.1:4243` and starting it:
+
+    boot2docker init
+    boot2docker up
+
+#### External server
 
 Docker can also run on a different server.
 You need to create an SSH keypair and copy it to the server that hosts
