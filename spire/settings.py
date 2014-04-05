@@ -82,7 +82,11 @@ if 'DATABASE_URL' in os.environ: # production environment
     EMAIL_HOST_PASSWORD = os.environ['SENDGRID_PASSWORD']
 
     # add extra apps
-    INSTALLED_APPS = INSTALLED_APPS + ('raven.contrib.django.raven_compat',)
+    #INSTALLED_APPS = INSTALLED_APPS + ('raven.contrib.django.raven_compat',)
+
+    BROKER_URL = os.environ["BROKER_URL"]
+
+
 else: # development environment
     DEPLOYMENT = 'development'
     DEBUG = True
@@ -172,7 +176,7 @@ DOCKER_IMAGE = 'cloudfleet/cockpit' # the image to build the container from
 import logging
 
 LOG_PATH, LOG_FILENAME = '.', 'spire.log'
-LOG_LEVEL = logging.INFO
+LOG_LEVEL = logging.DEBUG
 LOG_MAX = 10**6 # bytes
 
 logging.basicConfig(
