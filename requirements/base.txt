@@ -9,3 +9,4 @@ Flask==0.10.1
 plumbum==1.4.1
 requests==2.2.1
 South==0.8.4
+python-logstash==0.3.1

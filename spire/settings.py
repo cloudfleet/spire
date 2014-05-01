@@ -174,10 +174,12 @@ DOCKER_IMAGE = 'cloudfleet/cockpit' # the image to build the container from
 
 # logging configuration
 import logging
+import logstash
 
 LOG_PATH, LOG_FILENAME = '.', 'spire.log'
 LOG_LEVEL = logging.DEBUG
 LOG_MAX = 10**6 # bytes
+LOGSTASH_HOST, LOGSTASH_PORT = 'localhost', 5959
 
 logging.basicConfig(
     level=LOG_LEVEL,
@@ -186,9 +188,13 @@ logging.basicConfig(
         logging.handlers.RotatingFileHandler(
             os.path.join(LOG_PATH, LOG_FILENAME), maxBytes=LOG_MAX
         ), # file output
-        logging.StreamHandler() # stdout
+        logging.StreamHandler(), # stdout
+        logstash.LogstashHandler(LOGSTASH_HOST, LOGSTASH_PORT, version=1)
     ]
 )
+
+# TODO: Django logging settings:
+# https://pypi.python.org/pypi/python-logstash/0.3.1
 
 # to override these settings, create local_settings.py and run as
 #     ./manage.py --settings=local_settings runserver
