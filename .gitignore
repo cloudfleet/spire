@@ -47,3 +47,5 @@ spire/static/duralumin
 node_modules
 *.log
 local_settings.py
+newrelic.ini
+backends.rc

@@ -1,3 +1,5 @@
+django-toolbelt==0.0.1
+psycopg2==2.5.2
 dj-database-url==0.3.0
 -e git+https://github.com/kennethreitz/dj-static.git#egg=dj_static-master
 django-celery==3.1.9
