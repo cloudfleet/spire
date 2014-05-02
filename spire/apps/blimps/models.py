@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 import requests
 
-from spire import settings
+from django.conf import settings
 
 import docker
 c = docker.Client(base_url='http://localhost:4444',
@@ -41,7 +41,9 @@ def get_pagekite_frontend():
         url = subprocess.check_output(cmd).decode().rstrip()
     else:
         url = settings.BLIMPYARD_URL
-    url = url + ':' + str(settings.BLIMPYARD_PAGEKITE_PORT)
+    port = settings.BLIMPYARD_PAGEKITE_PORT
+    if port != 80:
+        url = url + ':' + str(port)
     return url
 
 class Blimp(models.Model):
@@ -67,8 +69,7 @@ class Blimp(models.Model):
                 )
 
     # start blimp
-    # sudo docker run -d -p 1338:1337 kermit/hellonode
-    # sudo docker run -d -p 3001:3000 kermit/simple-ldap
+    # sudo docker run -d -p 3001:3000 cloudfleet/cockpit
     def start(self):
         """start the docker container"""
         with blimpyard_tunnel() as rem:
@@ -76,7 +77,7 @@ class Blimp(models.Model):
             logging.info('1. start container')
             try:
                 pagekite_frontend = get_pagekite_frontend()
-                start_script = '$HOME/cockpit/scripts/start.sh'
+                start_script = '/root/cockpit/scripts/start.sh'
                 secret = 'password' # TODO: randomly generate
                 cmd = '{} {} {} {}'.format(
                     start_script,
@@ -84,7 +85,7 @@ class Blimp(models.Model):
                     secret,
                     pagekite_frontend
                 )
-                logging.info(' - start command: ' + cmd)
+                logging.debug(' - start command: ' + cmd)
                 # test.localhost password 172.17.42.1:60666
                 # we get back the container id
                 container = c.create_container(settings.DOCKER_IMAGE,
@@ -93,7 +94,7 @@ class Blimp(models.Model):
                                                ports=[3000])
                 c.start(container, publish_all_ports=True)
             except requests.exceptions.ConnectionError:
-                logging.info(" - didn't start: connection error")
+                logging.error(" - didn't start: connection error")
                 container = None
             else:
                 logging.info(' - {} container started'.format(settings.DOCKER_IMAGE))
@@ -118,10 +119,13 @@ class Blimp(models.Model):
         """stop the container"""
         with blimpyard_tunnel():
             try:
+                logging.debug('1. stop container')
                 c.stop(self.subdomain)
+                logging.debug('2. remove container')
                 c.remove_container(self.subdomain)
+                logging.info('- blimp deleted')
             except requests.exception.ConnectionError:
-                pass
+                logging.error('Connection error')
 
     def url_exposed(self):
         """as exposed through Docker"""

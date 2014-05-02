@@ -57,6 +57,11 @@ by editing */etc/default/docker* and restarting the service
 
     DOCKER_OPTS="-H unix:///var/run/docker.sock -H tcp://localhost:4243"
 
+If you get permission issues, disable AppArmor for docker:
+
+    sudo ln -s /etc/apparmor.d/docker /etc/apparmor.d/disable/
+    sudo apparmor_parser -R /etc/apparmor.d/docker
+
 #### OS X
 
 On OS X you would install it by downloading
