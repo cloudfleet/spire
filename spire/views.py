@@ -7,7 +7,7 @@ from spire.apps.blimps.models import Blimp
 
 def home(request):
     msg = 'Hello cloudfleeters! Welcome to the landing page. Fancy, eh?'
-    template = loader.get_template('spire/dj-home.html')
+    template = loader.get_template('spire/home.html')
     context = RequestContext(request)
     return HttpResponse(template.render(context))
 
@@ -15,7 +15,7 @@ def home(request):
 def dashboard(request):
     user = request.user
     blimps = Blimp.objects.filter(owner=user)
-    return render(request, 'spire/dj-dashboard.html', {
+    return render(request, 'spire/dashboard.html', {
         'user': user,
         'blimps': blimps,
     })

@@ -1,2 +1,22 @@
 {% extends "duralumin/dj-base.html" %}
 {% load i18n %}
+
+{% url 'home' as home %}
+{% url 'dashboard' as dashboard %}
+
+{% block navitems %}
+<li{% if request.path == home %} class="active"{% endif %}>
+  <a href="{% url 'home' %}">HOME</a>
+</li>
+<li{% if request.path == dashboard %} class="active"{% endif %}>
+  <a href="{% url 'dashboard' %}">DASHBOARD</a>
+</li>
+{% endblock %}
+
+{% block navitems-login %}
+{% if user.is_authenticated %}
+  <li><a href="{% url 'auth_logout' %}">LOG OUT</a></li>
+{% else %}
+  <li><a href="{% url 'auth_login' %}">LOG IN</a></li>
+{% endif %}
+{% endblock %}
