@@ -12,16 +12,9 @@ urlpatterns = patterns(
     url(r'^dashboard/blimp/', include('spire.apps.blimps.urls')),
     #TODO: put under api/ or something
     url(r'^auth/$', 'spire.views.auth', name='auth'),
+    url(r'^accounts/', include('allauth.urls')),
     # Examples:
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
 )
-
-
-
-
-
-
-
-

@@ -1,4 +1,4 @@
-eployment
+Deployment
 ==========
 *So, you'd like to deploy Spire? Be my guest...*
 
@@ -100,6 +100,9 @@ If this is your first time run, initialize the DB.
 On any other `git pull` you should check if the DB schema needs an update.
 
     ./manage.py migrate
+
+Go to [localhost:8000/admin/]() and click add Site and create a site with
+your site's domain name (used in sign-up verification e-mails).
 
 ### Rock'n'roll!
 

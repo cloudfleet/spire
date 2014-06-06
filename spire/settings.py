@@ -18,7 +18,6 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'b=-s+lqg2ghsgm9ikw)3+sv3bx-!tc6tr%h9cv4!%&7-2o%nt$'
 
-
 # Application definition
 
 INSTALLED_APPS = (
@@ -31,7 +30,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'django.contrib.sites', TODO: enable, registration recommends it
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'south',
     'spire.apps.blimps',
 )
@@ -105,6 +107,16 @@ TEMPLATE_DIRS = (
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.request',
+    # allauth specific context processors
+    'allauth.account.context_processors.account',
+    'allauth.socialaccount.context_processors.socialaccount',
+)
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of ‘allauth‘
+    'django.contrib.auth.backends.ModelBackend',
+    # ‘allauth‘ specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 # Internationalization
@@ -136,11 +148,16 @@ STATICFILES_DIRS = (
 
 from registration_defaults.settings import *
 
+SITE_ID = 1
+
 ACCOUNT_ACTIVATION_DAYS = 7 # after this period, the account gets locked
 
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGIN_URL = '/account/login/'
 LOGOUT_URL = '/account/logout/'
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory' # or 'optional' or 'none'
 
 # login_required urls
 
