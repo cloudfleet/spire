@@ -22,8 +22,6 @@ SECRET_KEY = 'b=-s+lqg2ghsgm9ikw)3+sv3bx-!tc6tr%h9cv4!%&7-2o%nt$'
 
 INSTALLED_APPS = (
     'djcelery',
-    'registration_defaults',
-    'registration',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -146,15 +144,14 @@ STATICFILES_DIRS = (
 
 # User registration
 
-from registration_defaults.settings import *
 
 SITE_ID = 1
 
-ACCOUNT_ACTIVATION_DAYS = 7 # after this period, the account gets locked
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7 # after this period, the account gets locked
 
 LOGIN_REDIRECT_URL = '/dashboard/'
-LOGIN_URL = '/account/login/'
-LOGOUT_URL = '/account/logout/'
+LOGIN_URL = '/accounts/login/'
+LOGOUT_URL = '/accounts/logout/'
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory' # or 'optional' or 'none'

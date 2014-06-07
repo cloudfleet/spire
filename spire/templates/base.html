@@ -1,5 +1,6 @@
 {% extends "duralumin/dj-base.html" %}
 {% load i18n %}
+{% load account %}
 
 {% url 'home' as home %}
 {% url 'dashboard' as dashboard %}
@@ -15,8 +16,8 @@
 
 {% block navitems-login %}
 {% if user.is_authenticated %}
-  <li><a href="{% url 'auth_logout' %}">LOG OUT</a></li>
+  <li><a href="{% url 'account_logout' %}">LOG OUT</a></li>
 {% else %}
-  <li><a href="{% url 'auth_login' %}">LOG IN</a></li>
+  <li><a href="{% url 'account_login' %}">LOG IN</a></li>
 {% endif %}
 {% endblock %}

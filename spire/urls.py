@@ -8,7 +8,6 @@ urlpatterns = patterns(
     '',
     url(r'^$', 'spire.views.home', name='home'),
     url(r'^dashboard/$', 'spire.views.dashboard', name='dashboard'),
-    url(r'^account/', include('registration.backends.default.urls')),
     url(r'^dashboard/blimp/', include('spire.apps.blimps.urls')),
     #TODO: put under api/ or something
     url(r'^auth/$', 'spire.views.auth', name='auth'),
