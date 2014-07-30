@@ -47,10 +47,8 @@ Start a worker in the background.
 #### Ubuntu
 
 A [docker](http://www.docker.io/) daemon is expected to be available.
-Install it
-
-    curl -s https://get.docker.io/ubuntu/ | sudo sh
-
+Install it by following
+[the official instructions](https://docs.docker.com/installation/ubuntulinux/)
 and make it listen to HTTP connections
 by editing */etc/default/docker* and restarting the service
 (`sudo service docker restart`):
@@ -62,19 +60,12 @@ If you get permission issues, disable AppArmor for docker:
     sudo ln -s /etc/apparmor.d/docker /etc/apparmor.d/disable/
     sudo apparmor_parser -R /etc/apparmor.d/docker
 
+(though we had some problems with AppArmor, so hopefully you won't have to)
+
 #### OS X
 
-On OS X you would install it by downloading
-[VirtualBox](https://www.virtualbox.org/wiki/Downloadshttps://www.virtualbox.org/wiki/Downloads),
-installing the daemon and the client
-
-    brew install docker boot2docker
-
-fThen editing your .bashrc/.zshrc by adding
-`export DOCKER_HOST=tcp://127.0.0.1:4243` and starting it:
-
-    boot2docker init
-    boot2docker up
+On OS X you would install it by following
+[the official instructions](https://docs.docker.com/installation/mac/).
 
 #### External server
 
