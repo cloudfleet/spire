@@ -39,3 +39,21 @@
 </div>
 
 {% endblock %}
+
+{% block manual-js %}
+<script src="http://localhost:8001/socket.io/socket.io.js"></script>
+<script>
+ // TODO: when testing done, put in separate file
+ $(document).ready(function(){
+   var socket = io.connect('localhost', {port: 8001});
+
+   socket.on('connect', function(){
+     console.log("connect");
+   });
+
+   socket.on('message', function(message) {
+     console.log(message);
+   });
+ });
+</script>
+{% endblock %}

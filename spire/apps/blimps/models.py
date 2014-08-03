@@ -17,6 +17,8 @@ from plumbum import SshMachine
 import os
 from contextlib import contextmanager
 
+import redis
+
 @contextmanager
 def blimpyard_tunnel():
     try:
@@ -45,6 +47,13 @@ def get_pagekite_frontend():
     if port != 80:
         url = url + ':' + str(port)
     return url
+
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
+def push_notification():
+    """push notofication to frontend using Redis + Node.js"""
+    # TODO: add blimp id data to message
+    # TODO: test with Celery in another process
+    r.publish('spire-pusher', 'blimp ready')
 
 class Blimp(models.Model):
     """a magical box that flies over to someone and provides secure,
@@ -113,6 +122,9 @@ class Blimp(models.Model):
             logging.info('3. restart pagekite')
             # - call the Flask service that restarts pagekite
             rem['/usr/bin/wget localhost:5000 -o /dev/null']()
+
+            # notify frontend to update the view
+            push_notification()
             return container
 
     def stop(self):

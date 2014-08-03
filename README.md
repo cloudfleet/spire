@@ -42,6 +42,19 @@ Start a worker in the background.
 
     celery -A spire worker -l info
 
+### Redis
+
+As a key-value store we need Redis - in Ubuntu...
+
+    # TODO
+
+... or in OS X.
+
+    brew install redis
+
+and set it to [start automatically](http://naleid.com/blog/2011/03/05/running-redis-as-a-user-daemon-on-osx-with-launchd)
+(yay, OS X :P).
+
 ### Docker
 
 #### Ubuntu
