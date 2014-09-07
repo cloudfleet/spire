@@ -4,6 +4,7 @@ import subprocess
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from django.core.mail import send_mail, mail_admins
 import requests
 
 from django.conf import settings
@@ -161,6 +162,20 @@ class Blimp(models.Model):
             settings.BLIMPYARD_PAGEKITE_PORT
         )
         return container_url
+
+    def notify_admin(self):
+        """Notify the admins that a blimp was requested and needs manual
+        activation.
+
+        """
+        subject = "{} awaits a blimp".format(self.owner)
+        message = "User {} requested a blimp at url: {} .\n".format(
+            self.owner, self.url()
+        ) + "Make sure it works and activate it in the admin panel."
+        mail_admins(subject, message)
+        # TODO: notify user when blimp ready
+        #send_mail(subject, message, "admin@localhost",
+        #          ["user@example.com"])
 
 class BlimpForm(ModelForm):
     class Meta:
