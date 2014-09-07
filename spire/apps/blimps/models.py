@@ -64,6 +64,7 @@ class Blimp(models.Model):
     subdomain = models.CharField(max_length=100)
     owner = models.ForeignKey(User)
     port = models.IntegerField(null=True, blank=True, default=None)
+    ready = models.BooleanField(default=False)
 
     def __unicode__(self):
         return str("{}'s {}".format(self.owner, self.subdomain))

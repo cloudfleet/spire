@@ -14,11 +14,22 @@
 
       <ul class="list-group">
       {% for blimp in blimps %}
+        {% if not blimp.ready %}
+        <div class="alert alert-success" role="alert">
+          Thanks for ordering!
+          We'll send you an e-mail as soon as your blimp is ready.</div>
+        {% endif %}
         <li class="list-group-item">{{ blimp.subdomain }}
           <ul class="nav-pills pull-right list-unstyled">
+            {% if blimp.ready %}
             <li>
               <a class="btn btn-xs btn-success" href="{{ blimp.url }}" target="_newtab">launch</a>
             </li>
+            {% else %}
+            <li>
+              <span class="btn btn-xs btn-warning disabled">not ready</span>
+            </li>
+            {% endif %}
             <li>
               <a class="btn btn-xs btn-danger" href="{% url 'delete_blimp' blimp.id %}">delete</a>
             </li>
