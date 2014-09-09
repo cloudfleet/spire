@@ -12,7 +12,7 @@ plumbum==1.4.1
 requests==2.2.1
 South==0.8.4
 python-logstash==0.3.1
-django-allauth==0.16.1
+django-allauth==0.18
 django-websocket-redis==0.4.2
 -e git+https://github.com/fantix/gevent.git#egg=gevent
 greenlet==0.4.2

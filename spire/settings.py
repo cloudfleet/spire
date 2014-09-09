@@ -95,6 +95,7 @@ else: # development environment
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
     CELERY_ALWAYS_EAGER = True # run tasks in same thread for development
+    #CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
     ADMINS = (('admin', 'admin@localhost'),)
 # Templates
 
