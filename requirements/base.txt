@@ -1,16 +1,14 @@
+Django==1.7
 django-toolbelt==0.0.1
 psycopg2==2.5.2
 dj-database-url==0.3.0
 -e git+https://github.com/kennethreitz/dj-static.git@e73fa3bce00ac30b78218d60ece9efe931058a95#egg=dj_static-master
 django-celery==3.1.9
 django-registration-defaults==0.4.4
-django-registration==1.0
-Django==1.6.2
 docker-py==0.3.0
 Flask==0.10.1
 plumbum==1.4.1
 requests==2.2.1
-South==0.8.4
 python-logstash==0.3.1
 django-allauth==0.18
 django-websocket-redis==0.4.2

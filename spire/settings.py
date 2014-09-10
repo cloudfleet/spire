@@ -32,7 +32,6 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'south',
     'spire.apps.blimps',
 )
 
@@ -100,7 +99,7 @@ else: # development environment
 # Templates
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates')
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
