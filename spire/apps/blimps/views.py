@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.views.generic import ListView
+from braces.views import StaffuserRequiredMixin
 
 from .models import Blimp, BlimpForm
 from spire.apps.blimps.tasks import start_blimp, stop_blimp
@@ -32,3 +34,9 @@ def delete_blimp(request, pk):
         #TODO: push some notification to the client when the task's done
         blimp.delete()
     return HttpResponseRedirect(reverse('spire.views.dashboard'))
+
+# admin views
+#############
+
+class BlimpList(StaffuserRequiredMixin, ListView):
+    model = Blimp

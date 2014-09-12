@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Blimps</h2>
+
+<ul>
+  {% for blimp in object_list %}
+  <li class="list-group-item">{{ blimp.subdomain }}
+    <ul class="nav-pills pull-right list-unstyled">
+      <li>
+        <a class="btn btn-xs btn-success" href="{{ blimp.url }}" target="_newtab">launch</a>
+      </li>
+    </ul>
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
