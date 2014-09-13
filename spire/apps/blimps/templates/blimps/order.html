@@ -3,12 +3,13 @@
 {% block content %}
 
 
-<form class="form-horizontal" action="{% url 'order_blimp' %}" method="POST">
+<form class="form-horizontal"
+      action="{% url 'blimps:order_blimp' %}" method="POST">
   {% csrf_token %}
   {% for field in form %}
   <div class="form-group">
     {{ field.errors }}
-    {{ field.label_tag }} 
+    {{ field.label_tag }}
     <div class="col-sm-6">
       {{ field }}
     </div>
