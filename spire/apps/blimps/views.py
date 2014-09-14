@@ -40,3 +40,18 @@ def delete_blimp(request, pk):
 
 class BlimpList(StaffuserRequiredMixin, ListView):
     model = Blimp
+
+def activate_blimp(request, pk):
+    blimp = get_object_or_404(Blimp, pk=pk)
+    if request.user.is_staff:
+        #TODO: send e-mail to the customer
+        blimp.ready = True
+        blimp.save()
+    return HttpResponseRedirect(reverse('blimps:blimp_list'))
+
+def deactivate_blimp(request, pk):
+    blimp = get_object_or_404(Blimp, pk=pk)
+    if request.user.is_staff:
+        blimp.ready = False
+        blimp.save()
+    return HttpResponseRedirect(reverse('blimps:blimp_list'))
