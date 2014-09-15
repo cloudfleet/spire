@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# usage: ./bootstrap.sh heroku|dev|prod
+# usage: ./bootstrap.sh heroku|dev|prod|vagrant
 
 
 default=prod
@@ -15,7 +15,7 @@ deploy=${1:-$default}
 echo linking spire to duralumin
 CURDIR=`pwd`
 cd spire/templates
-rm -f duralumin
+rm -rf duralumin
 if [[ -d ../../duralumin && ( $deploy = heroku ) ]]; then
     # heroku deployment
     echo "----> heroku layout"
@@ -36,5 +36,17 @@ elif [[ -d ../../../duralumin ]]; then
         echo "----> prod layout"
         ln -s ../../../duralumin/dist duralumin
     fi
+elif [[ $deploy = "vagrant" ]]; then
+    echo "----> vagrant layout"
+    git clone https://github.com/cloudfleet/duralumin.git
 fi
 cd $CURDIR
+
+rm -rf venv
+virtualenv venv --distribute -p /usr/bin/python3
+source venv/bin/activate
+pip install -r requirements/dev.txt
+celery -A spire worker -l info
+./manage.py syncdb
+./manage.py runserver_plus
+
