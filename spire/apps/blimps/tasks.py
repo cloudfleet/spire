@@ -17,3 +17,8 @@ def start_blimp(blimp):
 def stop_blimp(blimp):
     blimp.stop() # stop the container
     return
+
+@shared_task
+def activate_blimp(blimp):
+    blimp.notify_user_blimp_ready()
+    return

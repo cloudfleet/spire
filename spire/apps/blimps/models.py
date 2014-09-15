@@ -173,9 +173,16 @@ class Blimp(models.Model):
             self.owner, self.url()
         ) + "Make sure it works and activate it in the admin panel."
         mail_admins(subject, message)
-        # TODO: notify user when blimp ready
-        #send_mail(subject, message, "admin@localhost",
-        #          ["user@example.com"])
+
+    def notify_user_blimp_ready(self):
+        """Notify the user that a requested blimp is ready."""
+        subject = "blimp {} ready".format(self.url())
+        message = "Hi {}, the blimp you requested is ready at: {} .".format(
+            self.owner.username, self.url()
+        )
+        #TODO: from field from config
+        send_mail(subject, message, "admin@localhost",
+                  [self.owner.email])
 
 class BlimpForm(ModelForm):
     class Meta:

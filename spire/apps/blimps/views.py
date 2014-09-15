@@ -6,6 +6,7 @@ from braces.views import StaffuserRequiredMixin
 
 from .models import Blimp, BlimpForm
 from spire.apps.blimps.tasks import start_blimp, stop_blimp
+from . import tasks
 
 # Create your views here.
 def order_blimp(request):
@@ -44,9 +45,9 @@ class BlimpList(StaffuserRequiredMixin, ListView):
 def activate_blimp(request, pk):
     blimp = get_object_or_404(Blimp, pk=pk)
     if request.user.is_staff:
-        #TODO: send e-mail to the customer
         blimp.ready = True
         blimp.save()
+        tasks.activate_blimp.delay(blimp)
     return HttpResponseRedirect(reverse('blimps:blimp_list'))
 
 def deactivate_blimp(request, pk):
