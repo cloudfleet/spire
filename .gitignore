@@ -49,3 +49,4 @@ node_modules
 local_settings.py
 newrelic.ini
 backends.rc
+.vagrant
