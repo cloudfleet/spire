@@ -3,7 +3,7 @@ django-toolbelt==0.0.1
 psycopg2==2.5.2
 dj-database-url==0.3.0
 -e git+https://github.com/kennethreitz/dj-static.git@e73fa3bce00ac30b78218d60ece9efe931058a95#egg=dj_static-master
-django-celery==3.1.9
+celery==3.1.15
 django-registration-defaults==0.4.4
 docker-py==0.3.0
 Flask==0.10.1
@@ -11,13 +11,14 @@ plumbum==1.4.1
 requests==2.2.1
 python-logstash==0.3.1
 django-allauth==0.18
-# django-websocket-redis==0.4.2
--e git+https://github.com/fantix/gevent.git#egg=gevent
-greenlet==0.4.2
-redis==2.10.1
 static3==0.5.1
-websocket-client==0.11.0
 honcho==0.5.0
-cython>=0.20
 django-braces==1.4.0
-celery==3.1
+
+# websocket stuff - work in progress
+#redis==2.10.1
+#django-websocket-redis==0.4.2
+#-e git+https://github.com/fantix/gevent.git#egg=gevent
+#greenlet==0.4.2
+#websocket-client==0.11.0
+#cython>=0.20
