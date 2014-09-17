@@ -46,7 +46,6 @@ rm -rf venv
 virtualenv venv --distribute -p /usr/bin/python3
 (source venv/bin/activate; \
 pip3 install -r requirements/dev.txt; \
-celery -A spire worker -l info ; \
 ./manage.py syncdb ; \
 ./manage.py runserver_plus)
 
