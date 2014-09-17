@@ -5,9 +5,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.core.mail import send_mail, mail_admins
-import requests
-
 from django.conf import settings
+import requests
 
 import docker
 c = docker.Client(base_url='http://localhost:4444',
@@ -182,7 +181,8 @@ class Blimp(models.Model):
             self.owner.username, self.url()
         )
         #TODO: from field from config
-        send_mail(subject, message, "admin@localhost",
+        admin_email = settings.ADMINS[0][1]
+        send_mail(subject, message, admin_email,
                   [self.owner.email])
 
 class BlimpForm(ModelForm):
