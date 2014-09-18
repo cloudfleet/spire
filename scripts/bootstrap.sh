@@ -39,6 +39,8 @@ elif [[ -d ../../../duralumin ]]; then
 elif [[ $deploy = "vagrant" ]]; then
     echo "----> vagrant layout"
     git clone https://github.com/cloudfleet/duralumin.git
+    cd duralumin
+    git checkout production
 fi
 cd $CURDIR
 
@@ -46,5 +48,5 @@ rm -rf venv
 virtualenv venv --distribute -p /usr/bin/python3
 (source venv/bin/activate && \
   pip3 install -r requirements/dev.txt && \
-  ./manage.py syncdb --noinp)
+  ./manage.py syncdb --noinput)
 
