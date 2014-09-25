@@ -183,7 +183,7 @@ elif DEPLOYMENT == 'production':
     BLIMPYARD_USER = 'kermit'
     BLIMPYARD_PAGEKITE_PORT = 80
 DOCKER_PORT = 4243
-DOCKER_IMAGE = 'cloudfleet/cockpit' # the image to build the container from
+DOCKER_IMAGE = 'cloudfleet/blimp' # the image to build the container from
 
 # logging configuration
 import logging

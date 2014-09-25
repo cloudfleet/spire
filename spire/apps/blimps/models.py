@@ -88,22 +88,21 @@ class Blimp(models.Model):
             logging.info('1. start container')
             try:
                 pagekite_frontend = get_pagekite_frontend()
-                start_script = '/root/cockpit/scripts/start.sh'
                 secret = 'password' # TODO: randomly generate
-                cmd = '{} {} {} {}'.format(
-                    start_script,
-                    self.host(),
-                    secret,
-                    pagekite_frontend
-                )
-                logging.debug(' - start command: ' + cmd)
                 # test.localhost password 172.17.42.1:60666
                 # we get back the container id
+
+                environment = {
+                    "CLOUDFLEET_DOMAIN": self.subdomain, # TODO need full domain here
+                    "CLOUDFLEET_SECRET": secret,
+                    "CLOUDFLEET_HOST": pagekite_frontend
+                }
+                logging.debug(' - environment: ' + environment)
+
                 container = c.create_container(settings.DOCKER_IMAGE,
-                                               command=cmd,
                                                name=self.subdomain,
-                                               ports=[3000])
-                c.start(container, publish_all_ports=True)
+                                               environment=environment)
+                c.start(container)
             except requests.exceptions.ConnectionError:
                 logging.error(" - didn't start: connection error")
                 container = None
