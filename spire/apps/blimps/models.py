@@ -97,7 +97,7 @@ class Blimp(models.Model):
                     "CLOUDFLEET_SECRET": secret,
                     "CLOUDFLEET_HOST": pagekite_frontend
                 }
-                logging.debug(' - environment: ' + environment)
+                logging.debug(' - environment: ' + str(environment))
 
                 container = c.create_container(settings.DOCKER_IMAGE,
                                                name=self.subdomain,
