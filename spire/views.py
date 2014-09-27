@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from spire.apps.blimps.models import Blimp
 
 def home(request):
-    msg = 'Hello cloudfleeters! Welcome to the landing page. Fancy, eh?'
+    msg = 'Hello CloudFleeters! Welcome to the landing page. Fancy, eh?'
     template = loader.get_template('spire/home.html')
     context = RequestContext(request)
     return HttpResponse(template.render(context))

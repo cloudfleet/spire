@@ -168,7 +168,7 @@ LOGIN_REQUIRED_URLS_EXCEPTIONS = ()
 #CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
 
-# Cloudfleet-specific settings
+# CloudFleet-specific settings
 #-----------------------------
 
 # path to the private ssh used to connect to blimpyard (docker, pagekite)
