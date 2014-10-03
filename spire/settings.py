@@ -94,7 +94,6 @@ else: # development environment
     INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
     CELERY_ALWAYS_EAGER = True # run tasks in same thread for development
     #CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
-    ADMINS = (('admin', 'admin@localhost'),)
 # Templates
 
 TEMPLATE_DIRS = (
@@ -154,6 +153,11 @@ LOGOUT_URL = '/accounts/logout/'
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory' # or 'optional' or 'none'
+
+# who to notify with admin e-mails
+ADMINS = (('admin', 'admin@localhost'), )
+# shown in the "from" field of e-mails by default
+DEFAULT_FROM_EMAIL = ADMINS[0][1]
 
 # login_required urls
 
