@@ -91,7 +91,18 @@ else: # development environment
     TEMPLATE_DEBUG = True
     # print e-mails to the console instead of sending them
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
+    INSTALLED_APPS += ('django_extensions',
+                      'debug_toolbar.apps.DebugToolbarConfig', )
+    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware', )
+    INTERNAL_IPS = ('127.0.0.1', )
+    DEBUG_TOOLBAR_CONFIG = {
+        'DISABLE_PANELS': [
+            'debug_toolbar.panels.redirects.RedirectsPanel',
+        ],
+        'SHOW_TEMPLATE_CONTEXT': True,
+    }
+    # end django-debug-toolbar
+
     CELERY_ALWAYS_EAGER = True # run tasks in same thread for development
     #CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 # Templates

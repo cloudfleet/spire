@@ -6,3 +6,4 @@ ipython==1.2.1
 jedi==0.7.0
 Werkzeug==0.9.4
 pip-tools==0.3.4
+django-debug-toolbar==1.2.1
