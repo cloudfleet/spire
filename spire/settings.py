@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from sys import platform as _platform
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
@@ -200,6 +201,9 @@ elif DEPLOYMENT == 'production':
     BLIMPYARD_PAGEKITE_PORT = 80
 DOCKER_PORT = 4243
 DOCKER_IMAGE = 'cloudfleet/blimp' # the image to build the container from
+#if _platform == "darwin":
+#    DOCKER_PORT = 2375
+# TODO: solve for OS X - see boot2docker info
 
 # logging configuration
 import logging
