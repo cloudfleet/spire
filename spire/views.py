@@ -20,16 +20,6 @@ def dashboard(request):
         'blimps': blimps,
     })
 
-    #return HttpResponse(msg)
-
-    # user = request.user
-    # if user.is_authenticated():
-    #     msg = "hello, " + user.username + '. <a href="/account/logout/?next=''">logout</a>'
-    #     return HttpResponse(msg)
-    # else: #TODO: url name instead of path
-    #     return redirect('/account/login/?next=%s' % request.path)
-    # TODO: different / based on logged in/not
-
 # Blimp authentication
 # - similar example:
 # https://github.com/Nitron/django-cas-provider/blob/master/cas_provider/views.py

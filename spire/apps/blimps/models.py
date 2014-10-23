@@ -93,7 +93,7 @@ class Blimp(models.Model):
                 # we get back the container id
 
                 environment = {
-                    "CLOUDFLEET_DOMAIN": self.subdomain, # TODO need full domain here
+                    "CLOUDFLEET_DOMAIN": self.host(),
                     "CLOUDFLEET_SECRET": secret,
                     "CLOUDFLEET_HOST": pagekite_frontend
                 }
@@ -179,7 +179,6 @@ class Blimp(models.Model):
         message = "Hi {}, the blimp you requested is ready at: {} .".format(
             self.owner.username, self.url()
         )
-        #TODO: from field from config
         admin_email = settings.ADMINS[0][1]
         send_mail(subject, message, admin_email,
                   [self.owner.email])
