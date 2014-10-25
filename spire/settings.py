@@ -194,6 +194,8 @@ if DEPLOYMENT == 'development':
     BLIMPYARD_URL = 'localhost'
     BLIMPYARD_USER = None
     BLIMPYARD_PAGEKITE_PORT = 60666
+    BLIMPYARD_DOCKER_API_HOST = 'localhost'
+    BLIMPYARD_DOCKER_API_PORT = 4444
 elif DEPLOYMENT == 'production':
     BLIMPYARD_KEY = '~/.ssh/blimpyard_rsa'
     BLIMPYARD_URL = 'blimpyard.cloudfleet.io'

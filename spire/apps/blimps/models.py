@@ -9,7 +9,11 @@ from django.conf import settings
 import requests
 
 import docker
-c = docker.Client(base_url='http://localhost:4444',
+docker_base_url = 'http://{}:{}'.format(
+    settings.BLIMPYARD_DOCKER_API_HOST,
+    settings.BLIMPYARD_DOCKER_API_PORT
+)
+c = docker.Client(base_url=docker_base_url,
                   version='1.6',
                   timeout=10)
 
