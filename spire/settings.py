@@ -188,24 +188,34 @@ LOGIN_REQUIRED_URLS_EXCEPTIONS = ()
 # CloudFleet-specific settings
 #-----------------------------
 
+# the host and port on Spire to bind the Blimpyard Docker API
+SPIRE_DOCKER_API_HOST = 'localhost'
+SPIRE_DOCKER_API_PORT = 4444
+# test tunneling worked with this during ordering:
+# curl -X GET http://localhost:4444/images/json
+
+# DOCKER API port
+DOCKER_PORT = 4243
+# the image to build the container from
+DOCKER_IMAGE = 'cloudfleet/blimp'
+
 # path to the private ssh used to connect to blimpyard (docker, pagekite)
 if DEPLOYMENT == 'development':
     BLIMPYARD_KEY = None
     BLIMPYARD_URL = 'localhost'
     BLIMPYARD_USER = None
     BLIMPYARD_PAGEKITE_PORT = 60666
-    BLIMPYARD_DOCKER_API_HOST = 'localhost'
-    BLIMPYARD_DOCKER_API_PORT = 4444
+    if _platform == "darwin":
+        # TODO: solve for OS X - see boot2docker info
+        DOCKER_PORT = 2375
+        BLIMPYARD_KEY = '~/.ssh/id_boot2docker'
+        BLIMPYARD_URL = '192.168.59.103'
+        BLIMPYARD_USER = 'docker'
 elif DEPLOYMENT == 'production':
     BLIMPYARD_KEY = '~/.ssh/blimpyard_rsa'
     BLIMPYARD_URL = 'blimpyard.cloudfleet.io'
     BLIMPYARD_USER = 'kermit'
     BLIMPYARD_PAGEKITE_PORT = 80
-DOCKER_PORT = 4243
-DOCKER_IMAGE = 'cloudfleet/blimp' # the image to build the container from
-#if _platform == "darwin":
-#    DOCKER_PORT = 2375
-# TODO: solve for OS X - see boot2docker info
 
 # logging configuration
 import logging

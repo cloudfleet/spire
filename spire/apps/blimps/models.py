@@ -10,8 +10,8 @@ import requests
 
 import docker
 docker_base_url = 'http://{}:{}'.format(
-    settings.BLIMPYARD_DOCKER_API_HOST,
-    settings.BLIMPYARD_DOCKER_API_PORT
+    settings.SPIRE_DOCKER_API_HOST,
+    settings.SPIRE_DOCKER_API_PORT
 )
 c = docker.Client(base_url=docker_base_url,
                   version='1.6',
@@ -32,7 +32,7 @@ def blimpyard_tunnel():
     url = settings.BLIMPYARD_URL
     user = settings.BLIMPYARD_USER
     docker_port = settings.DOCKER_PORT
-    local_port = 4444
+    local_port = settings.SPIRE_DOCKER_API_PORT
 
     with SshMachine(url, user=user, keyfile=keyfile) as blimpyard_host:
         with blimpyard_host.tunnel(local_port, docker_port):
