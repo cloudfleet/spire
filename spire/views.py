@@ -45,3 +45,33 @@ def auth(request):
     else:
         response_data = {'authenticated': False, 'reason': 'unknown'}
     return HttpResponse(json.dumps(response_data))
+
+@csrf_exempt
+def auth_blimp(request):
+    """Allows external apps to authenticate and authorize access to a blimp.
+
+    @param username: registered at Spire, e.g. 'user'
+    @param password: registered at Spire, e.g. '1234'
+    @param blimp: full blimp domain ordered, e.g. 'user.bonniecloud.com'
+
+    """
+
+    username = request.POST.get('username', None)
+    password = request.POST.get('password', None)
+    blimp = request.POST.get('blimp', None)
+    user = authenticate(username=username, password=password)
+    if user:
+        if user.is_active:
+            # TODO: authenticate to enable access to services
+            # verify blimp
+            response_data = {'authenticated': False,
+                             'reason': 'unauthorized'}
+            for users_blimp in Blimp.objects.filter(owner=user):
+                if users_blimp.host() == blimp:
+                    response_data = {'authenticated': True}
+                    break
+        else:
+            response_data = {'authenticated': False, 'reason': 'disabled'}
+    else:
+        response_data = {'authenticated': False, 'reason': 'unknown'}
+    return HttpResponse(json.dumps(response_data))

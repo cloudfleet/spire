@@ -10,4 +10,9 @@ if spire is running:
 
 or against the live app:
 
-    python external_authentication.py https://cloudfleet.herokuapp.com/auth/
+    python external_authentication.py https://cloudfleet.herokuapp.com
+
+To try Blimp authorization as well, pass the blimp url
+(the part after the subdomain is BLIMPYARD_URL) e.g.:
+
+    python external_authentication.py localhost:8000 jules.localhost

@@ -188,6 +188,9 @@ LOGIN_REQUIRED_URLS_EXCEPTIONS = ()
 # CloudFleet-specific settings
 #-----------------------------
 
+# whether or not Spire should automatically start blimp containers
+SPIRE_CONTROL_BLIMPYARD = True
+
 # the host and port on Spire to bind the Blimpyard Docker API
 SPIRE_DOCKER_API_HOST = 'localhost'
 SPIRE_DOCKER_API_PORT = 4444

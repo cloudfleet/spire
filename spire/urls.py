@@ -12,6 +12,7 @@ urlpatterns = patterns(
                                       namespace='blimps')),
     #TODO: put under api/ or something
     url(r'^auth/$', 'spire.views.auth', name='auth'),
+    url(r'^auth_blimp/$', 'spire.views.auth_blimp', name='auth_blimp'),
     url(r'^accounts/', include('allauth.urls')),
     # Examples:
     # url(r'^blog/', include('blog.urls')),

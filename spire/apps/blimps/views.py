@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from braces.views import StaffuserRequiredMixin
+from django.conf import settings
 
 from .models import Blimp, BlimpForm
 from spire.apps.blimps.tasks import start_blimp, stop_blimp
@@ -17,7 +18,8 @@ def order_blimp(request):
             blimp = form.save(commit=False) # extract model object from form
             blimp.owner = request.user
             blimp.save() # save the new blimp in the DB
-            start_blimp.delay(blimp) # start celery task
+            if settings.SPIRE_CONTROL_BLIMPYARD:
+                start_blimp.delay(blimp) # start celery task
             #TODO: push some notification to the client when the task's done
             return HttpResponseRedirect(reverse('spire.views.dashboard'))
     else:
@@ -31,7 +33,8 @@ def order_blimp(request):
 def delete_blimp(request, pk):
     blimp = get_object_or_404(Blimp, pk=pk)
     if blimp.owner == request.user:
-        stop_blimp.delay(blimp)
+        if settings.SPIRE_CONTROL_BLIMPYARD:
+            stop_blimp.delay(blimp)
         #TODO: push some notification to the client when the task's done
         blimp.delete()
     return HttpResponseRedirect(reverse('spire.views.dashboard'))
