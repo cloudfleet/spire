@@ -220,6 +220,10 @@ elif DEPLOYMENT == 'production':
     BLIMPYARD_USER = 'kermit'
     BLIMPYARD_PAGEKITE_PORT = 80
 
+# the base domain and port through which the blimps can be accessed
+BLIMP_DOMAIN = BLIMPYARD_URL
+BLIMP_PORT = BLIMPYARD_PAGEKITE_PORT
+
 # logging configuration
 import logging
 import logstash

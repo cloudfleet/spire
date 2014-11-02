@@ -135,3 +135,10 @@ Install the production dependencies.
     pip install -r requirements/prod.txt
 
 [runserver_plus]: http://django-extensions.readthedocs.org/en/latest/runserver_plus.html
+
+TODO
+====
+- ___.bonniecloud.com in the form UI
+- certificate request in the API
+(when the user plugs the box in for the first time)
+- create 2 A4 pages of promotional materials

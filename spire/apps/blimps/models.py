@@ -153,7 +153,7 @@ class Blimp(models.Model):
         """just host (no port)"""
         # TODO: read from DB
         container_host = '{}.{}'.format(
-            self.subdomain, settings.BLIMPYARD_URL
+            self.subdomain, settings.BLIMP_DOMAIN
         )
         return container_host
 
@@ -161,8 +161,8 @@ class Blimp(models.Model):
         """full url for external access"""
         # TODO: read from DB
         container_url = 'http://{}.{}:{}'.format(
-            self.subdomain, settings.BLIMPYARD_URL,
-            settings.BLIMPYARD_PAGEKITE_PORT
+            self.subdomain, settings.BLIMP_DOMAIN,
+            settings.BLIMP_PORT
         )
         return container_url
 
