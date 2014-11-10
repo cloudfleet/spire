@@ -1,3 +1,5 @@
+import logging
+
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -59,3 +61,32 @@ def deactivate_blimp(request, pk):
         blimp.ready = False
         blimp.save()
     return HttpResponseRedirect(reverse('blimps:blimp_list'))
+
+# API
+#####
+
+from .forms import RequestCertificateForm
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+import json
+
+@csrf_exempt
+def request_cert(request):
+    """Request a SSL certificate to be registered - note in the DB and notify
+    the staff.
+
+    @param blimp: full blimp domain ordered, e.g. 'user.bonniecloud.com'
+    @param secret: a shared secret given to the blimp when it was created
+    @param signature: the signature file containing the blimp's public key
+
+    """
+    response_data = {'success' : False}
+    if request.method == 'POST':
+        form = RequestCertificateForm(request.POST, request.FILES)
+        if form.is_valid():
+            signature_file = request.FILES['signature']
+            logging.debug(signature_file.read())
+            # TODO: finish uploading
+            # https://docs.djangoproject.com/en/dev/topics/http/file-uploads/
+            response_data['success'] = True
+    return HttpResponse(json.dumps(response_data))

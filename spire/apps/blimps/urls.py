@@ -8,4 +8,5 @@ urlpatterns = patterns(
     url('^(?P<pk>\d+)/activate/$', views.activate_blimp, name='activate_blimp'),
     url('^(?P<pk>\d+)/deactivate/$', views.deactivate_blimp, name='deactivate_blimp'),
     url('^list$', views.BlimpList.as_view(), name='blimp_list'),
+    url('^api/request_cert$', views.request_cert, name='request_cert'),
 )

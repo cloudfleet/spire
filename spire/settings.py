@@ -178,7 +178,10 @@ LOGIN_REQUIRED_URLS = (
     r'/dashboard/(.*)$',
 )
 
-LOGIN_REQUIRED_URLS_EXCEPTIONS = ()
+# TODO: better separation of API and other urls
+LOGIN_REQUIRED_URLS_EXCEPTIONS = (
+    r'/dashboard/blimp/api/(.*)$',
+)
 
 # Celery
 #CELERY_RESULT_BACKEND='djcelery.backends.cache:CacheBackend'
@@ -204,6 +207,7 @@ DOCKER_IMAGE = 'cloudfleet/blimp'
 
 # path to the private ssh used to connect to blimpyard (docker, pagekite)
 if DEPLOYMENT == 'development':
+    SPIRE_CONTROL_BLIMPYARD = False
     BLIMPYARD_KEY = None
     BLIMPYARD_URL = 'localhost'
     BLIMPYARD_USER = None

@@ -141,4 +141,3 @@ TODO
 - ___.bonniecloud.com in the form UI
 - certificate request in the API
 (when the user plugs the box in for the first time)
-- create 2 A4 pages of promotional materials

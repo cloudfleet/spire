@@ -1,4 +1,10 @@
+"""An example demonstrating the client-side usage
+of the external authentication API
+
+"""
+
 import requests, sys
+
 url = sys.argv[1] + '/auth/'
 print('trying jules')
 r = requests.post(url,
