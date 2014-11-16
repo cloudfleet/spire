@@ -85,8 +85,15 @@ def request_cert(request):
         form = RequestCertificateForm(request.POST, request.FILES)
         if form.is_valid():
             signature_file = request.FILES['signature']
-            logging.debug(signature_file.read())
-            # TODO: finish uploading
-            # https://docs.djangoproject.com/en/dev/topics/http/file-uploads/
-            response_data['success'] = True
+            # TODO: work with domains, not subdomains everywhere
+            subdomain = form.cleaned_data['domain'].split('.')[0]
+            try:
+                blimp = Blimp.objects.get(subdomain=subdomain)
+                logging.debug(blimp)
+                logging.debug(signature_file.read())
+                blimp.signature = signature_file
+                blimp.save()
+                response_data['success'] = True
+            except Blimp.DoesNotExist:
+                pass
     return HttpResponse(json.dumps(response_data))

@@ -50,3 +50,4 @@ local_settings.py
 newrelic.ini
 backends.rc
 .vagrant
+media

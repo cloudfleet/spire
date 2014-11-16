@@ -138,6 +138,9 @@ Install the production dependencies.
 
 TODO
 ====
-- ___.bonniecloud.com in the form UI
 - certificate request in the API
 (when the user plugs the box in for the first time)
+ + serve media files
+ + update admin template for downloading files
+- use dotenv
+- work with domains, not subdomains everywhere

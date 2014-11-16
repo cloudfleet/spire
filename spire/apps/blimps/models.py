@@ -70,9 +70,14 @@ class Blimp(models.Model):
     owner = models.ForeignKey(User)
     port = models.IntegerField(null=True, blank=True, default=None)
     ready = models.BooleanField(default=False)
+    signature = models.FileField(upload_to='blimps',
+                                 null=True, blank=True, default=None)
 
     def __unicode__(self):
-        return str("{}'s {}".format(self.owner, self.subdomain))
+        return str("{}'s blimp - {}".format(self.owner, self.subdomain))
+
+    def __str__(self):
+        return self.__unicode__()
 
     def generate_backendsrc(self, path):
         with open(path, 'w') as f:
