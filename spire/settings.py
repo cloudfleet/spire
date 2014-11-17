@@ -108,6 +108,7 @@ else: # development environment
     CELERY_ALWAYS_EAGER = True # run tasks in same thread for development
     #CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+    MEDIA_URL = '/media/'
 # Templates
 
 TEMPLATE_DIRS = (

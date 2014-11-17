@@ -140,7 +140,6 @@ TODO
 ====
 - certificate request in the API
 (when the user plugs the box in for the first time)
- + serve media files
- + update admin template for downloading files
+ + notify admins
 - use dotenv
 - work with domains, not subdomains everywhere

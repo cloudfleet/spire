@@ -2,12 +2,31 @@
 
 {% block content %}
 
+<h1>CloudFleet admin</h1>
+
+<p>
+  <a class="btn btn-success" href="{% url 'admin:index' %}">Django admin</a>
+</p>
+
 <h2>Blimps</h2>
+
+<p>These are the blimps for all the users. Be careful what you do, as some
+  actions (like activating a blimp) trigger user notifications by e-mail.</p>
+
+<br/>
 
 <ul>
   {% for blimp in object_list %}
   <li class="list-group-item">{{ blimp.subdomain }}
     <ul class="nav-pills pull-right list-unstyled">
+
+      {% if blimp.signature %}
+      <li>
+        <a class="btn btn-xs btn-success"
+           href="{{ blimp.signature.url }}">signature</a>
+      </li>
+      {% endif %}
+      
       {% if blimp.ready %}
       <li>
         <a class="btn btn-xs btn-danger"
@@ -23,6 +42,7 @@
         </a>
       </li>
       {% endif %}
+      
       <li>
         <a class="btn btn-xs btn-success" href="{{ blimp.url }}" target="_newtab">view</a>
       </li>
