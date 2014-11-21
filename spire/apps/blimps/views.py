@@ -93,6 +93,9 @@ def request_cert(request):
                 logging.debug(signature_file.read())
                 blimp.signature = signature_file
                 blimp.save()
+                blimp.notify_admin_signature(
+                    request.build_absolute_uri(blimp.signature.url)
+                )
                 response_data['success'] = True
             except Blimp.DoesNotExist:
                 pass

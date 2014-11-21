@@ -182,6 +182,14 @@ class Blimp(models.Model):
         ) + "Make sure it works and activate it in the admin panel."
         mail_admins(subject, message)
 
+    def notify_admin_signature(self, signature_url):
+        """Notify admin that a signature is uploaded"""
+        subject = "{} needs an SSL certificate.".format(self.host())
+        message = "Signature for {} uploaded. Download: {} .".format(
+            self.host(), signature_url
+        )
+        mail_admins(subject, message)
+
     def notify_user_blimp_ready(self):
         """Notify the user that a requested blimp is ready."""
         subject = "blimp {} ready".format(self.url())
