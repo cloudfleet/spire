@@ -15,6 +15,7 @@ django-bootstrap-form==3.1
 static3==0.5.1
 honcho==0.5.0
 django-braces==1.4.0
+django-dotenv==1.2
 
 # websocket stuff - work in progress
 #redis==2.10.1
