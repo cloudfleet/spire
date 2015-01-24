@@ -12,7 +12,7 @@ if spire is running:
 
 or against the live app:
 
-    python external_authentication.py https://cloudfleet.herokuapp.com
+    python external_authentication.py https://spire.cloudfleet.io
 
 To try Blimp authorization as well, pass the blimp url
 (the part after the subdomain is BLIMPYARD_URL) e.g.:
@@ -26,3 +26,8 @@ Run the example as:
     python request_cert.py http://localhost:8000 test.localhost secret
 
 where `test.localhost` is the domain and `secret` is the... secret.
+
+To test the API against the live app:
+
+    python request_cert.py https://spire.cloudfleet.io \
+        kermit.blimpyard.cloudfleet.io:80 password
