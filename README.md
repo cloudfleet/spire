@@ -138,7 +138,4 @@ Install the production dependencies.
 
 TODO
 ====
-- certificate request in the API
-(when the user plugs the box in for the first time)
- + notify admins
 - work with domains, not subdomains everywhere

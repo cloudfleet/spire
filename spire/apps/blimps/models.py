@@ -66,7 +66,9 @@ class Blimp(models.Model):
 
     """
     # TODO: random number as serial
+    # TODO: remove subdomain when domain is fully functional
     subdomain = models.CharField(max_length=100)
+    domain = models.CharField(max_length=100)
     owner = models.ForeignKey(User)
     port = models.IntegerField(null=True, blank=True, default=None)
     ready = models.BooleanField(default=False)
