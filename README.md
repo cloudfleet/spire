@@ -139,3 +139,5 @@ Install the production dependencies.
 TODO
 ====
 - work with domains, not subdomains everywhere
+- ___.bonniecloud.com in the form UI
+- use dotenv

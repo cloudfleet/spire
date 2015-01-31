@@ -19,6 +19,7 @@ def order_blimp(request):
             # process the order
             blimp = form.save(commit=False) # extract model object from form
             blimp.owner = request.user
+            blimp.subdomain = blimp.domain.split('.')[0]
             blimp.save() # save the new blimp in the DB
             if settings.SPIRE_CONTROL_BLIMPYARD:
                 start_blimp.delay(blimp) # start celery task
@@ -27,7 +28,7 @@ def order_blimp(request):
     else:
         form = BlimpForm()
         #import ipdb; ipdb.set_trace()
-        form.fields['subdomain'].widget.attrs['autofocus'] = 'autofocus'
+        form.fields['domain'].widget.attrs['autofocus'] = 'autofocus'
     from django.http import HttpResponse
     #return HttpResponse('fill out')
     return render(request, 'blimps/order.html', {'form': form})

@@ -205,4 +205,4 @@ class Blimp(models.Model):
 class BlimpForm(ModelForm):
     class Meta:
         model = Blimp
-        fields = ['subdomain']
+        fields = ['domain']
