@@ -33,6 +33,7 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     'bootstrapform',
+    'rest_framework',
     'spire.apps.blimps',
 )
 
@@ -188,6 +189,15 @@ LOGIN_REQUIRED_URLS_EXCEPTIONS = (
 # Celery
 #CELERY_RESULT_BACKEND='djcelery.backends.cache:CacheBackend'
 #CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+
+# Django REST framework settings
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 
 # CloudFleet-specific settings

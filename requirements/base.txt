@@ -1,5 +1,6 @@
 Django==1.7
 django-toolbelt==0.0.1
+djangorestframework==3.0.4
 psycopg2==2.5.2
 dj-database-url==0.3.0
 -e git+https://github.com/kennethreitz/dj-static.git@e73fa3bce00ac30b78218d60ece9efe931058a95#egg=dj_static-master
