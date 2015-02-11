@@ -5,6 +5,28 @@ from django.conf.urls.static import static
 from django.contrib import admin
 admin.autodiscover()
 
+# quick REST framework test
+#----------------------------
+# TODO: move into appropriate modules
+from .apps.blimps.models import Blimp
+from rest_framework import routers, serializers, viewsets
+
+# Serializers define the API representation.
+class BlimpSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Blimp
+        fields = ('domain', 'ready', 'signature')
+
+# ViewSets define the view behavior.
+class BlimpViewSet(viewsets.ModelViewSet):
+    queryset = Blimp.objects.all()
+    serializer_class = BlimpSerializer
+
+# Routers provide an easy way of automatically determining the URL conf.
+router = routers.DefaultRouter()
+router.register(r'blimps', BlimpViewSet)
+#----------------------------
+
 urlpatterns = patterns(
     '',
     url(r'^$', 'spire.views.home', name='home'),
@@ -20,5 +42,6 @@ urlpatterns = patterns(
 
     url(r'^api-auth/', include('rest_framework.urls',
                                namespace='rest_framework')),
+    url(r'^api/', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
