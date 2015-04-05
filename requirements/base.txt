@@ -1,4 +1,4 @@
-Django==1.7
+Django==1.8
 django-toolbelt==0.0.1
 djangorestframework==3.0.4
 psycopg2==2.5.2
@@ -9,9 +9,9 @@ django-registration-defaults==0.4.4
 docker-py==0.3.0
 Flask==0.10.1
 plumbum==1.4.1
-requests==2.2.1
+requests==2.6.0
 python-logstash==0.3.1
-django-allauth==0.18
+django-allauth==0.19.1
 django-bootstrap-form==3.1
 static3==0.5.1
 honcho==0.5.0
