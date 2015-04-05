@@ -71,6 +71,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import json
 
+# TODO: make this an authenticated req., use the REST framework
 @csrf_exempt
 def request_cert(request):
     """Request a SSL certificate to be registered - note in the DB and notify
@@ -86,10 +87,9 @@ def request_cert(request):
         form = RequestCertificateForm(request.POST, request.FILES)
         if form.is_valid():
             signature_file = request.FILES['signature']
-            # TODO: work with domains, not subdomains everywhere
-            subdomain = form.cleaned_data['domain'].split('.')[0]
+            domain = form.cleaned_data['domain']
             try:
-                blimp = Blimp.objects.get(subdomain=subdomain)
+                blimp = Blimp.objects.get(domain=domain)
                 logging.debug(blimp)
                 logging.debug(signature_file.read())
                 blimp.signature = signature_file

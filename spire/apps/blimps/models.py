@@ -76,7 +76,7 @@ class Blimp(models.Model):
                                  null=True, blank=True, default=None)
 
     def __unicode__(self):
-        return str("{}'s blimp - {}".format(self.owner, self.subdomain))
+        return str("{}'s blimp - {}".format(self.owner, self.domain))
 
     def __str__(self):
         return self.__unicode__()
@@ -157,21 +157,15 @@ class Blimp(models.Model):
         return container_url
 
     def host(self):
-        """just host (no port)"""
-        # TODO: read from DB
-        container_host = '{}.{}'.format(
-            self.subdomain, settings.BLIMP_DOMAIN
+        """domain with subdomain included, e.g. blimp.jules.org"""
+        host_str = '{}.{}'.format(
+            settings.BLIMP_SUBDOMAIN, self.domain
         )
-        return container_host
+        return host_str
 
     def url(self):
-        """full url for external access"""
-        # TODO: read from DB
-        container_url = 'http://{}.{}:{}'.format(
-            self.subdomain, settings.BLIMP_DOMAIN,
-            settings.BLIMP_PORT
-        )
-        return container_url
+        """full url for external access, e.g. http://blimp.jules.org"""
+        return 'http://{}'.format(self.host())
 
     def notify_admin(self):
         """Notify the admins that a blimp was requested and needs manual

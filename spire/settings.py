@@ -238,6 +238,7 @@ elif DEPLOYMENT == 'production':
 
 # the base domain and port through which the blimps can be accessed
 BLIMP_DOMAIN = BLIMPYARD_URL
+BLIMP_SUBDOMAIN = 'blimp'
 BLIMP_PORT = BLIMPYARD_PAGEKITE_PORT
 
 # logging configuration

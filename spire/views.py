@@ -67,7 +67,7 @@ def auth_blimp(request):
             response_data = {'authenticated': False,
                              'reason': 'unauthorized'}
             for users_blimp in Blimp.objects.filter(owner=user):
-                if users_blimp.host() == blimp:
+                if users_blimp.domain == blimp:
                     response_data = {'authenticated': True}
                     break
         else:
