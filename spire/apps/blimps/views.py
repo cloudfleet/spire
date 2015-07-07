@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from braces.views import StaffuserRequiredMixin
 from django.conf import settings
+from django.contrib.auth.models import User
 
 from .models import Blimp, BlimpForm
 from spire.apps.blimps.tasks import start_blimp, stop_blimp
@@ -101,3 +102,25 @@ def request_cert(request):
             except Blimp.DoesNotExist:
                 pass
     return HttpResponse(json.dumps(response_data))
+
+
+# Django REST Framework views
+#############################
+
+# TODO: all API endpoint should be written in this way
+
+from rest_framework import viewsets
+
+from .serializers import BlimpSerializer, UserSerializer
+
+# ViewSets define the view behavior.
+class BlimpViewSet(viewsets.ModelViewSet):
+    queryset = Blimp.objects.all()
+    serializer_class = BlimpSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
