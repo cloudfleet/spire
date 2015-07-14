@@ -46,3 +46,9 @@ To test the API against the live app:
 
     python request_cert.py https://spire.cloudfleet.io \
         kermit.blimpyard.cloudfleet.io:80 "djkslafjdsalfjdsalk" password
+
+## Getting the finished certificates
+
+Run the example as:
+
+    python get_cert.py http://localhost:8000 test.localhost secret

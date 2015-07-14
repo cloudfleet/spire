@@ -83,7 +83,8 @@ def deactivate_blimp(request, pk):
 # API
 #####
 
-from .forms import RequestCertificateForm, RequestCertificateJSONForm
+from .forms import RequestCertificateForm, RequestCertificateJSONForm, \
+    GetCertificateForm
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import json
@@ -133,6 +134,7 @@ def request_cert_json(request):
 
     """
     response_data = {'success' : False}
+    status = 403
     if request.method == 'POST':
         form = RequestCertificateJSONForm(request.POST)
         if form.is_valid():
@@ -148,10 +150,38 @@ def request_cert_json(request):
                     reverse('blimps:admin_blimp_edit', args=[blimp.id])
                 ))
                 response_data['success'] = True
+                status = 200
             except Blimp.DoesNotExist:
                 logging.debug('blimp does not exist')
                 pass
-    return HttpResponse(json.dumps(response_data))
+    return HttpResponse(json.dumps(response_data), status=status)
+
+# TODO: make this an authenticated req., use the REST framework
+@csrf_exempt
+def get_cert(request):
+    """Request a signed SSL certificate.
+
+    @param blimp: full blimp domain ordered, e.g. 'user.bonniecloud.com'
+    @param secret: a shared secret given to the blimp when it was created
+
+    """
+    response_data = {'success' : False}
+    status = 403
+    # TODO: make this a GET request with framework authentification
+    if request.method == 'POST':
+        form = GetCertificateForm(request.POST)
+        if form.is_valid():
+            domain = form.cleaned_data['domain']
+            try:
+                blimp = Blimp.objects.get(domain=domain)
+                logging.debug(blimp)
+                response_data['cert'] = blimp.cert
+                response_data['success'] = True
+                status = 200
+            except Blimp.DoesNotExist:
+                logging.debug('blimp does not exist')
+                pass
+    return HttpResponse(json.dumps(response_data), status=status)
 
 
 # Django REST Framework views
