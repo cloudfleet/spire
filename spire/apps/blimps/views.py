@@ -175,9 +175,13 @@ def get_cert(request):
             try:
                 blimp = Blimp.objects.get(domain=domain)
                 logging.debug(blimp)
-                response_data['cert'] = blimp.cert
-                response_data['success'] = True
-                status = 200
+                if blimp.cert:
+                    response_data['cert'] = blimp.cert
+                    response_data['success'] = True
+                    status = 200
+                else:
+                    response_data['success'] = False
+                    status = 404
             except Blimp.DoesNotExist:
                 logging.debug('blimp does not exist')
                 pass

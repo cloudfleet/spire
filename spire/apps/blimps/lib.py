@@ -4,6 +4,7 @@ import tempfile
 import os
 from urllib.parse import urljoin
 import logging
+import json
 
 import requests
 
@@ -20,6 +21,7 @@ def notify_periscope_cert_ready(blimp):
 
     # POST away!
     r = requests.post(urljoin(blimp.url(), '/periscope/bus/certificate'),
+                      data=json.dumps({'status': 'is_signed'}),
                       verify=bundle_file.name)
     logging.debug(r)
     logging.debug(r.text)
