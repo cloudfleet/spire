@@ -5,15 +5,18 @@
 
 <form class="form-horizontal"
       action="{% url 'blimps:order_blimp' %}" method="POST">
-  {% csrf_token %}
-  {% for field in form %}
-  <div class="form-group">
+    {% csrf_token %}
+    <!-- {% for field in form %}
+    <p>
+    <div class="form-group">
     {{ field.errors }}
     {{ field.label_tag }}
     {{ field }}
-    <!-- <i>.bonniecloud.com</i> -->
-  </div>
-  {% endfor %}
+    </div>
+    </p>
+    {% endfor %} -->
+    {{ form.as_p }}
+
   <input type="submit" value="Submit" class="btn btn-primary" />
 </form>
 
