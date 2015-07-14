@@ -7,6 +7,8 @@ urlpatterns = patterns(
     url('^(?P<pk>\d+)/delete/$', views.delete_blimp, name='delete_blimp'),
     url('^(?P<pk>\d+)/activate/$', views.activate_blimp, name='activate_blimp'),
     url('^(?P<pk>\d+)/deactivate/$', views.deactivate_blimp, name='deactivate_blimp'),
-    url('^list$', views.BlimpList.as_view(), name='blimp_list'),
+    url('^admin/list$', views.BlimpList.as_view(), name='admin_blimp_list'),
+    url('^admin/detail/(?P<pk>\d+)$', views.BlimpDetail.as_view(),
+        name='admin_blimp_detail'),
     url('^api/request_cert$', views.request_cert, name='request_cert'),
 )

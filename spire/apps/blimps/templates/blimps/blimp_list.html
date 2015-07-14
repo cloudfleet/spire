@@ -20,13 +20,17 @@
   <li class="list-group-item">{{ blimp.domain }}
     <ul class="nav-pills pull-right list-unstyled">
 
+        <li>
+            <a class="btn btn-xs btn-warning"
+               href="{% url 'blimps:admin_blimp_detail' blimp.id %}">edit</a>
+        </li>
       {% if blimp.signature %}
       <li>
         <a class="btn btn-xs btn-success"
            href="{{ blimp.signature.url }}">signature</a>
       </li>
       {% endif %}
-      
+
       {% if blimp.ready %}
       <li>
         <a class="btn btn-xs btn-danger"
@@ -42,7 +46,7 @@
         </a>
       </li>
       {% endif %}
-      
+
       <li>
         <a class="btn btn-xs btn-success" href="{{ blimp.url }}" target="_newtab">view</a>
       </li>

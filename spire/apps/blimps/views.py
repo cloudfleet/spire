@@ -3,7 +3,7 @@ import logging
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from braces.views import StaffuserRequiredMixin
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -47,6 +47,9 @@ def delete_blimp(request, pk):
 #############
 
 class BlimpList(StaffuserRequiredMixin, ListView):
+    model = Blimp
+
+class BlimpDetail(StaffuserRequiredMixin, DetailView):
     model = Blimp
 
 def activate_blimp(request, pk):
