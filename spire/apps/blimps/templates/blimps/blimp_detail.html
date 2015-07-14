@@ -20,6 +20,20 @@
     </li>
     {% endif %}
 
+    {% if blimp.cert_req %}
+    <li class="list-group-item">
+        Certificate request:
+        <pre>{{blimp.cert_req}}</pre>
+    </li>
+    {% endif %}
+
+    {% if blimp.cert_req %}
+    <li class="list-group-item">
+        Certificate:
+        <pre>{{blimp.cert}}</pre>
+    </li>
+    {% endif %}
+
 </ul>
 
 

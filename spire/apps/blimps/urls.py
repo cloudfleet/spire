@@ -15,4 +15,6 @@ urlpatterns = patterns(
     url(r'^admin/edit/(?P<pk>\d+)$', views.BlimpUpdate.as_view(),
         name='admin_blimp_edit'),
     url(r'^api/request_cert$', views.request_cert, name='request_cert'),
+    url(r'^api/request_cert_json$', views.request_cert_json,
+        name='request_cert_json'),
 )

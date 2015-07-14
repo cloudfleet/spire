@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.core.mail import send_mail, mail_admins
+from django.core.urlresolvers import reverse
 from django.conf import settings
 import requests
 
@@ -72,8 +73,11 @@ class Blimp(models.Model):
     owner = models.ForeignKey(User)
     port = models.IntegerField(null=True, blank=True, default=None)
     ready = models.BooleanField(default=False)
+    # TODO: remove signature as a file - replace with certificate_request
     signature = models.FileField(upload_to='blimps',
                                  null=True, blank=True, default=None)
+    cert_req = models.TextField(null=True, blank=True, default=None)
+    cert = models.TextField(null=True, blank=True, default=None)
 
     def __unicode__(self):
         return str("{}'s blimp - {}".format(self.owner, self.domain))
@@ -183,6 +187,14 @@ class Blimp(models.Model):
         subject = "{} needs an SSL certificate.".format(self.host())
         message = "Signature for {} uploaded. Download: {} .".format(
             self.host(), signature_url
+        )
+        mail_admins(subject, message)
+
+    def notify_admin_cert_req(self, edit_url):
+        """Notify admin that a cert_req has arrived"""
+        subject = "{} needs an SSL certificate.".format(self.host())
+        message = "Signature for {} uploaded. Process:\n{}".format(
+            self.host(), edit_url
         )
         mail_admins(subject, message)
 

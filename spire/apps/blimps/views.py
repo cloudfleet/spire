@@ -55,7 +55,7 @@ class BlimpDetail(StaffuserRequiredMixin, DetailView):
 
 class BlimpUpdate(StaffuserRequiredMixin, UpdateView):
     model = Blimp
-    fields = ['domain', 'owner']
+    fields = ['domain', 'owner', 'cert_req', 'cert']
     template_name_suffix = '_update'
     success_url = reverse_lazy('blimps:admin_blimp_list')
 
@@ -77,7 +77,7 @@ def deactivate_blimp(request, pk):
 # API
 #####
 
-from .forms import RequestCertificateForm
+from .forms import RequestCertificateForm, RequestCertificateJSONForm
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import json
@@ -94,6 +94,7 @@ def request_cert(request):
 
     """
     response_data = {'success' : False}
+    status = 403
     if request.method == 'POST':
         form = RequestCertificateForm(request.POST, request.FILES)
         if form.is_valid():
@@ -109,7 +110,40 @@ def request_cert(request):
                     request.build_absolute_uri(blimp.signature.url)
                 )
                 response_data['success'] = True
+                status = 200
             except Blimp.DoesNotExist:
+                pass
+    return HttpResponse(json.dumps(response_data), status=status)
+
+# TODO: make this an authenticated req., use the REST framework
+@csrf_exempt
+def request_cert_json(request):
+    """Request a SSL certificate to be registered - note in the DB and notify
+    the staff. Like above, but no file submitted, just json.
+
+    @param blimp: full blimp domain ordered, e.g. 'user.bonniecloud.com'
+    @param secret: a shared secret given to the blimp when it was created
+    @param cert_req: the blimp's certificate request string
+
+    """
+    response_data = {'success' : False}
+    if request.method == 'POST':
+        form = RequestCertificateJSONForm(request.POST)
+        if form.is_valid():
+            cert_req = form.cleaned_data['cert_req']
+            domain = form.cleaned_data['domain']
+            try:
+                blimp = Blimp.objects.get(domain=domain)
+                logging.debug(blimp)
+                logging.debug(cert_req)
+                blimp.cert_req = cert_req
+                blimp.save()
+                blimp.notify_admin_cert_req(request.build_absolute_uri(
+                    reverse('blimps:admin_blimp_edit', args=[blimp.id])
+                ))
+                response_data['success'] = True
+            except Blimp.DoesNotExist:
+                logging.debug('blimp does not exist')
                 pass
     return HttpResponse(json.dumps(response_data))
 

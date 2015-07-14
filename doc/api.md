@@ -30,4 +30,19 @@ where `test.localhost` is the domain and `secret` is the... secret.
 To test the API against the live app:
 
     python request_cert.py https://spire.cloudfleet.io \
-        kermit.blimpyard.cloudfleet.io:80 password
+    kermit.blimpyard.cloudfleet.io:80 password
+
+## Certificate requesting (just json)
+
+Run the example as:
+
+    python request_cert.py http://localhost:8000 test.localhost \
+    "djkslafjdsalfjdsalk" secret
+
+where `test.localhost` is the domain, `"djkslafjdsalfjdsalk"` is the
+cert. request and `secret` is the... secret.
+
+To test the API against the live app:
+
+    python request_cert.py https://spire.cloudfleet.io \
+        kermit.blimpyard.cloudfleet.io:80 "djkslafjdsalfjdsalk" password
