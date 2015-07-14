@@ -17,12 +17,16 @@
 
 <ul>
   {% for blimp in object_list %}
-  <li class="list-group-item">{{ blimp.domain }}
+    <li class="list-group-item"><a href="{{ blimp.url }}" target="_newtab">{{ blimp.domain }}</a>
     <ul class="nav-pills pull-right list-unstyled">
 
         <li>
+            <a class="btn btn-xs btn-success"
+               href="{% url 'blimps:admin_blimp_detail' blimp.id %}">view</a>
+        </li>
+        <li>
             <a class="btn btn-xs btn-warning"
-               href="{% url 'blimps:admin_blimp_detail' blimp.id %}">edit</a>
+               href="{% url 'blimps:admin_blimp_edit' blimp.id %}">edit</a>
         </li>
       {% if blimp.signature %}
       <li>
@@ -47,9 +51,6 @@
       </li>
       {% endif %}
 
-      <li>
-        <a class="btn btn-xs btn-success" href="{{ blimp.url }}" target="_newtab">view</a>
-      </li>
     </ul>
   </li>
   {% endfor %}

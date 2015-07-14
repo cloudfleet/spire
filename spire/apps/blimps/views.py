@@ -1,9 +1,10 @@
 import logging
 
 from django.shortcuts import render, get_object_or_404
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import UpdateView
 from braces.views import StaffuserRequiredMixin
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -52,20 +53,26 @@ class BlimpList(StaffuserRequiredMixin, ListView):
 class BlimpDetail(StaffuserRequiredMixin, DetailView):
     model = Blimp
 
+class BlimpUpdate(StaffuserRequiredMixin, UpdateView):
+    model = Blimp
+    fields = ['domain', 'owner']
+    template_name_suffix = '_update'
+    success_url = reverse_lazy('blimps:admin_blimp_list')
+
 def activate_blimp(request, pk):
     blimp = get_object_or_404(Blimp, pk=pk)
     if request.user.is_staff:
         blimp.ready = True
         blimp.save()
         tasks.activate_blimp.delay(blimp)
-    return HttpResponseRedirect(reverse('blimps:blimp_list'))
+    return HttpResponseRedirect(reverse('blimps:admin_blimp_list'))
 
 def deactivate_blimp(request, pk):
     blimp = get_object_or_404(Blimp, pk=pk)
     if request.user.is_staff:
         blimp.ready = False
         blimp.save()
-    return HttpResponseRedirect(reverse('blimps:blimp_list'))
+    return HttpResponseRedirect(reverse('blimps:admin_blimp_list'))
 
 # API
 #####

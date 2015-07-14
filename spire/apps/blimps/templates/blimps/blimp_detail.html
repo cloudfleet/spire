@@ -9,6 +9,9 @@
         domain - <a href="{{ blimp.url }}" target="_newtab">
         {{ blimp.domain }}</a>
     </li>
+    <li class="list-group-item">
+        owner - {{ blimp.owner }}</a>
+    </li>
 
     {% if blimp.signature %}
     <li class="list-group-item">
@@ -17,21 +20,6 @@
     </li>
     {% endif %}
 
-    {% if blimp.ready %}
-    <li class="list-group-item">
-        <a class="btn btn-xs btn-danger"
-           href="{% url 'blimps:deactivate_blimp' blimp.id %}">
-            deactivate
-        </a>
-    </li>
-    {% else %}
-    <li class="list-group-item">
-        <a class="btn btn-xs btn-warning"
-           href="{% url 'blimps:activate_blimp' blimp.id %}">
-            activate
-        </a>
-    </li>
-    {% endif %}
 </ul>
 
 

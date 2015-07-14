@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<p>
+<form class="form-horizontal"
+      action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update" />
+</form>
+</p>
+
+<p>
+    If the blimp
+    <a href="{{ blimp.url }}" target="_newtab">{{ blimp.domain }}</a> is ready and
+    fully working, click activate
+    to notify the user <i>{{blimp.owner}}</i> by e-mail that they can access it.
+</p>
+
+{% if blimp.ready %}
+<a class="btn btn-xs btn-danger"
+   href="{% url 'blimps:deactivate_blimp' blimp.id %}">
+    deactivate
+</a>
+{% else %}
+<a class="btn btn-xs btn-warning"
+   href="{% url 'blimps:activate_blimp' blimp.id %}">
+    activate
+</a>
+{% endif %}
+
+{% endblock %}
