@@ -24,6 +24,9 @@ from contextlib import contextmanager
 
 #import redis
 
+from . import lib
+
+
 @contextmanager
 def blimpyard_tunnel():
     try:
@@ -169,7 +172,7 @@ class Blimp(models.Model):
 
     def url(self):
         """full url for external access, e.g. http://blimp.jules.org"""
-        return 'http://{}'.format(self.host())
+        return 'https://{}'.format(self.host())
 
     def notify_admin(self):
         """Notify the admins that a blimp was requested and needs manual
@@ -197,6 +200,13 @@ class Blimp(models.Model):
             self.host(), edit_url
         )
         mail_admins(subject, message)
+
+    def notify_periscope_cert_ready(self):
+        """API notification to the physical blimp that the signed certificate is
+        ready
+
+        """
+        lib.notify_periscope_cert_ready(self)
 
     def notify_user_blimp_ready(self):
         """Notify the user that a requested blimp is ready."""

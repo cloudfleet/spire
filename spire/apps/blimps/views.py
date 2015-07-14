@@ -59,6 +59,12 @@ class BlimpUpdate(StaffuserRequiredMixin, UpdateView):
     template_name_suffix = '_update'
     success_url = reverse_lazy('blimps:admin_blimp_list')
 
+    def form_valid(self, form):
+        logging.debug('notify sonar/periscope...')
+        response = super(BlimpUpdate, self).form_valid(form)
+        self.get_object().notify_periscope_cert_ready()
+        return response
+
 def activate_blimp(request, pk):
     blimp = get_object_or_404(Blimp, pk=pk)
     if request.user.is_staff:
