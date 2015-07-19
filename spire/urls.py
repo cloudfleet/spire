@@ -31,4 +31,9 @@ urlpatterns = patterns(
                                namespace='rest_framework')),
     url(r'^api/', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
+
+    # new API
+    url(r'^api/v1/blimp', include('spire.apps.blimps.urls_api',
+                                   namespace='blimps')),
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

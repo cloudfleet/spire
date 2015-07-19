@@ -3,7 +3,6 @@ import subprocess
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.forms import ModelForm
 from django.core.mail import send_mail, mail_admins
 from django.core.urlresolvers import reverse
 from django.conf import settings
@@ -71,9 +70,12 @@ class Blimp(models.Model):
     """
     # TODO: random number as serial
     # TODO: remove subdomain when domain is fully functional
-    subdomain = models.CharField(max_length=100)
-    domain = models.CharField(max_length=100)
-    owner = models.ForeignKey(User)
+    subdomain = models.CharField(max_length=100, blank=True)
+    domain = models.CharField(max_length=100, unique=True)
+    # optional user on Spire who owns the blimp
+    owner = models.ForeignKey(User, null=True, blank=True)
+    username = models.CharField(max_length=255, blank=True)
+    password = models.CharField(max_length=255, blank=True) # hashed password
     port = models.IntegerField(null=True, blank=True, default=None)
     ready = models.BooleanField(default=False)
     # TODO: remove signature as a file - replace with certificate_request
@@ -83,7 +85,7 @@ class Blimp(models.Model):
     cert = models.TextField(null=True, blank=True, default=None)
 
     def __unicode__(self):
-        return str("{}'s blimp - {}".format(self.owner, self.domain))
+        return str("{}@{}".format(self.username, self.domain))
 
     def __str__(self):
         return self.__unicode__()
@@ -217,8 +219,3 @@ class Blimp(models.Model):
         admin_email = settings.ADMINS[0][1]
         send_mail(subject, message, admin_email,
                   [self.owner.email])
-
-class BlimpForm(ModelForm):
-    class Meta:
-        model = Blimp
-        fields = ['domain']

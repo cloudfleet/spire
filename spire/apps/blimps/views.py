@@ -9,7 +9,8 @@ from braces.views import StaffuserRequiredMixin
 from django.conf import settings
 from django.contrib.auth.models import User
 
-from .models import Blimp, BlimpForm
+from .models import Blimp
+from .forms import BlimpForm
 from spire.apps.blimps.tasks import start_blimp, stop_blimp
 from . import tasks
 

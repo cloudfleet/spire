@@ -23,4 +23,6 @@ urlpatterns = patterns(
         name='request_cert_json'),
     url(r'^api/get_cert$', views.get_cert,
         name='get_cert'),
+
+    # NEW API - urls in api_urls.py
 )
