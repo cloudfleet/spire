@@ -79,6 +79,8 @@ class Blimp(models.Model):
     password = models.CharField(max_length=255, blank=True) # hashed password
     # one-time password used in the blimp-spire communication workflow
     OTP = models.CharField(max_length=255, blank=True)
+    # a shared secret accessible to the blimp, spire, mail relay and pagekite
+    secret = models.CharField(max_length=255, blank=True)
     port = models.IntegerField(null=True, blank=True, default=None)
     ready = models.BooleanField(default=False)
     # TODO: remove signature as a file - replace with certificate_request
@@ -192,7 +194,14 @@ class Blimp(models.Model):
         blimp. Doesn't save to DB - call blimp.save() separately.
 
         """
-        self.OTP = lib.generate_OTP()
+        self.OTP = lib.generate_password()
+
+    def generate_secret(self):
+        """Generate a shared secret that will be accessible to the blimp, spire,
+        mail relay and pagekite.
+
+        """
+        self.secret = lib.generate_password(40)
 
     def notify_admin_signature(self, signature_url):
         """Notify admin that a signature is uploaded"""

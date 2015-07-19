@@ -37,6 +37,8 @@ def order_blimp(request):
         if form.is_valid():
             blimp = form.save(commit=False) # extract model object from form
             blimp.generate_OTP()
+            blimp.generate_secret()
+            # TODO: send secret to pagekite & mail relay
             blimp.save() # save the new blimp in the DB
             notify_admin.delay(blimp) # start celery task to notify admins
             return HttpResponse()
@@ -53,7 +55,7 @@ def request_cert(request, domain):
     Example:
 
         curl -H "Accept: application/json" \
-          -X POST -d '{"cert_req":"1234"}' \
+          -X POST -d '{"cert_req":"1234", "OTP":"1234"}' \
           http://localhost:8000/api/v1/blimp/example.com/certificate/request
 
     """
@@ -70,6 +72,7 @@ def request_cert(request, domain):
                 logging.debug(blimp)
                 logging.debug(cert_req)
                 if OTP == blimp.OTP:
+                    # TODO: invalidate OTP
                     blimp.cert_req = cert_req
                     blimp.save()
                     blimp.notify_admin_cert_req(request.build_absolute_uri(

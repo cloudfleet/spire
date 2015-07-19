@@ -32,7 +32,6 @@ def notify_periscope_cert_ready(blimp):
     # free the temp. file
     os.unlink(bundle_file.name)
 
-def generate_OTP():
+def generate_password(length=255):
     chars = string.ascii_letters + string.digits
-    length = 255
     return ''.join(choice(chars) for _ in range(length))
