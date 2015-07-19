@@ -60,7 +60,6 @@ def request_cert(request, domain):
           http://localhost:8000/api/v1/blimp/example.com/certificate/request
 
     """
-    response_data = {'success' : False}
     status = 403
     if request.method == 'POST':
         CR_dict = json.loads((request.body).decode('utf-8'))
@@ -79,11 +78,10 @@ def request_cert(request, domain):
                     blimp.notify_admin_cert_req(request.build_absolute_uri(
                         reverse('blimps:admin_blimp_edit', args=[blimp.id])
                     ))
-                response_data['success'] = True
                 status = 200
             except Blimp.DoesNotExist:
                 logging.debug('blimp does not exist')
-    return HttpResponse(json.dumps(response_data), status=status)
+    return HttpResponse(status=status)
 
 def get_secret(request, domain):
     """Get the blimp's secret.
@@ -95,7 +93,7 @@ def get_secret(request, domain):
           http://localhost:8000/api/v1/blimp/example.com/secret
 
     """
-    response_data = {'success' : False}
+    response_data = {}
     status = 403
     if request.method == 'GET':
         try:
@@ -109,3 +107,62 @@ def get_secret(request, domain):
         except Blimp.DoesNotExist:
             logging.debug('blimp does not exist')
     return HttpResponse(json.dumps(response_data), status=status)
+
+def get_certificate(request, domain):
+    """Get the blimp's signed certificate.
+
+    Example:
+
+        curl -H "Accept: application/json" \
+          http://localhost:8000/api/v1/blimp/example.com/certificate
+
+    """
+    status = 403
+    response_data = {'success' : False}
+    if request.method == 'GET':
+        try:
+            blimp = Blimp.objects.get(domain=domain)
+            if blimp.cert:
+                response_data['cert'] = blimp.cert
+                response_data['success'] = True
+                logging.debug('cert for blimp found')
+                logging.debug(blimp.cert)
+                status = 200
+            else:
+                response_data['success'] = False
+                logging.debug('no cert for blimp')
+                status = 404
+        except Blimp.DoesNotExist:
+            logging.debug('blimp does not exist')
+    return HttpResponse(json.dumps(response_data), status=status)
+
+
+def auth(request, domain):
+    """Get the blimp's secret.
+
+    Example:
+
+        curl -H "Accept: application/json" \
+          -H "X_AUTH_USERNAME: myuser" \
+          -H "X_AUTH_PASSWORD: 1234" \
+          -H "X_AUTH_DOMAIN: domain_signed_with_cert_req" \
+          http://localhost:8000/api/v1/blimp/example.com/auth
+
+    """
+    status = 403
+    if request.method == 'GET':
+        try:
+            blimp = Blimp.objects.get(domain=domain)
+            username = request.META['HTTP_X_AUTH_USERNAME']
+            password = request.META['HTTP_X_AUTH_PASSWORD']
+            if auth_blimp_cert(domain, request.META, blimp.cert_req):
+                if blimp.username == username and blimp.password == password:
+                    status = 200
+                    logging.debug('blimp auth OK')
+                else:
+                    logging.debug('blimp user or password not correct')
+            else:
+                logging.debug('blimp client certificate not authenticated')
+        except Blimp.DoesNotExist:
+            logging.debug('blimp does not exist')
+    return HttpResponse(status=status)

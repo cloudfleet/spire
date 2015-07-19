@@ -34,6 +34,6 @@ urlpatterns = patterns(
 
     # new API
     url(r'^api/v1/blimp', include('spire.apps.blimps.urls_api',
-                                   namespace='blimps')),
+                                   namespace='blimps_api')),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
