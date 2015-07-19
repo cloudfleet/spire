@@ -4,6 +4,8 @@ import tempfile
 import os
 from urllib.parse import urljoin
 import logging
+import string
+from random import sample, choice
 
 import requests
 
@@ -29,3 +31,8 @@ def notify_periscope_cert_ready(blimp):
 
     # free the temp. file
     os.unlink(bundle_file.name)
+
+def generate_OTP():
+    chars = string.ascii_letters + string.digits
+    length = 255
+    return ''.join(choice(chars) for _ in range(length))

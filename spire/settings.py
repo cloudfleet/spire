@@ -94,9 +94,11 @@ else: # development environment
     TEMPLATE_DEBUG = True
     # print e-mails to the console instead of sending them
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    INSTALLED_APPS += ('django_extensions',
-                      'debug_toolbar.apps.DebugToolbarConfig', )
-    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware', )
+    import sys
+    if 'manage' in sys.argv[0]:
+        INSTALLED_APPS += ('django_extensions',
+                           'debug_toolbar.apps.DebugToolbarConfig', )
+        MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware', )
     INTERNAL_IPS = ('127.0.0.1', )
     DEBUG_TOOLBAR_CONFIG = {
         'DISABLE_PANELS': [

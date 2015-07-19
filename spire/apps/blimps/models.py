@@ -74,8 +74,11 @@ class Blimp(models.Model):
     domain = models.CharField(max_length=100, unique=True)
     # optional user on Spire who owns the blimp
     owner = models.ForeignKey(User, null=True, blank=True)
+    # the username & pw for logging into the physical blimp the first time
     username = models.CharField(max_length=255, blank=True)
     password = models.CharField(max_length=255, blank=True) # hashed password
+    # one-time password used in the blimp-spire communication workflow
+    OTP = models.CharField(max_length=255, blank=True)
     port = models.IntegerField(null=True, blank=True, default=None)
     ready = models.BooleanField(default=False)
     # TODO: remove signature as a file - replace with certificate_request
@@ -177,15 +180,19 @@ class Blimp(models.Model):
         return 'https://{}'.format(self.host())
 
     def notify_admin(self):
-        """Notify the admins that a blimp was requested and needs manual
-        activation.
+        """Notify the admins that a blimp was ordered.
 
         """
-        subject = "{} awaits a blimp".format(self.owner)
-        message = "User {} requested a blimp at url: {} .\n".format(
-            self.owner, self.url()
-        ) + "Make sure it works and activate it in the admin panel."
+        subject = "blimp {} ordered".format(self)
+        message = "blimp {} ordered.".format(self)
         mail_admins(subject, message)
+
+    def generate_OTP(self):
+        """Generate a one-time password (OTP). This is sent with the physical
+        blimp. Doesn't save to DB - call blimp.save() separately.
+
+        """
+        self.OTP = lib.generate_OTP()
 
     def notify_admin_signature(self, signature_url):
         """Notify admin that a signature is uploaded"""

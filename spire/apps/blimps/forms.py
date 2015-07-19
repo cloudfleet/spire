@@ -7,12 +7,6 @@ class BlimpForm(ModelForm):
         model = Blimp
         fields = ['domain']
 
-class BlimpAPIForm(ModelForm):
-    class Meta:
-        model = Blimp
-        fields = ['domain', 'username', 'password']
-
-
 class RequestCertificateForm(forms.Form):
     domain = forms.CharField(max_length=200)
     secret = forms.PasswordInput()
@@ -26,3 +20,14 @@ class RequestCertificateJSONForm(forms.Form):
 class GetCertificateForm(forms.Form):
     domain = forms.CharField(max_length=200)
     secret = forms.PasswordInput()
+
+# new API
+
+class BlimpAPIForm(ModelForm):
+    class Meta:
+        model = Blimp
+        fields = ['domain', 'username', 'password']
+
+class BlimpAPICertificateRequestForm(forms.Form):
+    cert_req = forms.CharField()
+    OTP = forms.CharField()
