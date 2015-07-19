@@ -9,5 +9,7 @@ urlpatterns = patterns(
     url(r'^/(?P<domain>[^\/]+)/certificate/request$',
         views_api.request_cert, name='request_cert'),
     url(r'^/(?P<domain>[^\/]+)/certificate/request/$',
-        views_api.request_cert, name='request_cert')
+        views_api.request_cert, name='request_cert'),
+    url(r'^/(?P<domain>[^\/]+)/secret/?$',
+        views_api.get_secret, name='get_secret'),
 )

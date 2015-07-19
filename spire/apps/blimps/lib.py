@@ -35,3 +35,15 @@ def notify_periscope_cert_ready(blimp):
 def generate_password(length=255):
     chars = string.ascii_letters + string.digits
     return ''.join(choice(chars) for _ in range(length))
+
+def auth_blimp_cert(domain, request_header, certificate):
+    """use certificate (or a self-signed certificate request) to
+    check that the request_header contains a signed string equal to
+    domain.
+
+    """
+
+    signed_domain = request_header['HTTP_X_AUTH_DOMAIN']
+    # TODO: implement this
+
+    return True

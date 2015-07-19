@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Blimp
 from .forms import BlimpAPIForm, BlimpAPICertificateRequestForm
 from .tasks import notify_admin
+from .lib import auth_blimp_cert
 
 def test_api(request):
     """Example:
@@ -82,5 +83,29 @@ def request_cert(request, domain):
                 status = 200
             except Blimp.DoesNotExist:
                 logging.debug('blimp does not exist')
-                pass
+    return HttpResponse(json.dumps(response_data), status=status)
+
+def get_secret(request, domain):
+    """Get the blimp's secret.
+
+    Example:
+
+        curl -H "Accept: application/json" \
+          -H "X_AUTH_DOMAIN: domain_signed_with_cert_req" \
+          http://localhost:8000/api/v1/blimp/example.com/secret
+
+    """
+    response_data = {'success' : False}
+    status = 403
+    if request.method == 'GET':
+        try:
+            blimp = Blimp.objects.get(domain=domain)
+            if auth_blimp_cert(domain, request.META, blimp.cert_req):
+                response_data['secret'] = blimp.secret
+                status = 200
+                logging.debug('blimp client certificate auth OK')
+            else:
+                logging.debug('blimp client certificate not authenticated')
+        except Blimp.DoesNotExist:
+            logging.debug('blimp does not exist')
     return HttpResponse(json.dumps(response_data), status=status)
