@@ -204,6 +204,14 @@ REST_FRAMEWORK = {
     ]
 }
 
+# CORS settings
+# CORS_ORIGIN_ALLOW_ALL = True # (False by default)
+CORS_ORIGIN_REGEX_WHITELIST = (
+    '^(https?://)?(\w+\.)?cloudfleet\.io$',
+    '^(http://)localhost:?(\d+)?$' # for development
+)
+CORS_URLS_REGEX = r'^/api/.*$' # (^.*$' by default)
+
 
 # CloudFleet-specific settings
 #-----------------------------
