@@ -181,12 +181,25 @@ class Blimp(models.Model):
         """full url for external access, e.g. http://blimp.jules.org"""
         return 'https://{}'.format(self.host())
 
+    def get_admin_url(self):
+        """the url to the Django admin interface for the model instance"""
+        info = (self._meta.app_label, self._meta.model_name)
+        return reverse('admin:%s_%s_change' % info, args=(self.pk,))
+
     def notify_admin(self):
         """Notify the admins that a blimp was ordered.
 
         """
         subject = "blimp {} ordered".format(self)
-        message = "blimp {} ordered.".format(self)
+        message = """
+        Blimp {} ordered.
+
+        1) Copy the OTP from <a href="https://spire.cloudfleet.io{}">here</a>.
+        2) Register domain, prepare and ship the device with the OTP.
+        """.format(
+            self,
+            self.get_admin_url()
+        )
         mail_admins(subject, message)
 
     def generate_OTP(self):
