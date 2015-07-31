@@ -57,13 +57,14 @@ def get_domain(request):
 
     """
     response_data = {}
-    status = 403
+    status = 404
     if request.method == 'GET':
         if 'HTTP_X_AUTH_OTP' in request.META:
             OTP = request.META['HTTP_X_AUTH_OTP']
             for blimp in Blimp.objects.all():
                 if blimp.OTP == OTP:
                     response_data['domain'] = blimp.domain
+                    status = 200
                     logging.debug('found blimp with matching OTP')
         else:
             logging.debug('no HTTP_X_AUTH_OTP custom header')
