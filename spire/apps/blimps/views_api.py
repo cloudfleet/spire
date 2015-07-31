@@ -52,7 +52,7 @@ def get_domain(request):
     Example:
 
         curl -H "Accept: application/json" \
-          -H "X_AUTH_OTP: onetimepassword" \
+          -H "X-AUTH-OTP: onetimepassword" \
           http://localhost:8000/api/v1/blimp/domain
 
     """
@@ -114,7 +114,7 @@ def get_secret(request, domain):
     Example:
 
         curl -H "Accept: application/json" \
-          -H "X_AUTH_DOMAIN: domain_signed_with_cert_req" \
+          -H "X-AUTH-DOMAIN: domain_signed_with_cert_req" \
           http://localhost:8000/api/v1/blimp/example.com/secret
 
     """
@@ -168,9 +168,9 @@ def auth(request, domain):
     Example:
 
         curl -H "Accept: application/json" \
-          -H "X_AUTH_USERNAME: myuser" \
-          -H "X_AUTH_PASSWORD: 1234" \
-          -H "X_AUTH_DOMAIN: domain_signed_with_cert_req" \
+          -H "X-AUTH-USERNAME: myuser" \
+          -H "X-AUTH-PASSWORD: 1234" \
+          -H "X-AUTH-DOMAIN: domain_signed_with_cert_req" \
           http://localhost:8000/api/v1/blimp/example.com/auth
 
     """
