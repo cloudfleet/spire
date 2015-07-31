@@ -46,6 +46,30 @@ def order_blimp(request):
         return HttpResponseBadRequest()
 
 @csrf_exempt
+def get_domain(request):
+    """Get a domain based on the OTP.
+
+    Example:
+
+        curl -H "Accept: application/json" \
+          -H "X_AUTH_OTP: onetimepassword" \
+          http://localhost:8000/api/v1/blimp/domain
+
+    """
+    response_data = {}
+    status = 403
+    if request.method == 'GET':
+        if 'HTTP_X_AUTH_OTP' in request.META:
+            OTP = request.META['HTTP_X_AUTH_OTP']
+            for blimp in Blimp.objects.all():
+                if blimp.OTP == OTP:
+                    response_data['domain'] = blimp.domain
+                    logging.debug('found blimp with matching OTP')
+        else:
+            logging.debug('no HTTP_X_AUTH_OTP custom header')
+    return HttpResponse(json.dumps(response_data), status=status)
+
+@csrf_exempt
 def request_cert(request, domain):
     """Request a SSL certificate to be registered - note in the DB and notify
     the staff.
