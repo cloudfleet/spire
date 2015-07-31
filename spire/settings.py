@@ -36,10 +36,12 @@ INSTALLED_APPS = (
     'bootstrapform',
     'rest_framework',
     'corsheaders',
+    'djangosecure',
     'spire.apps.blimps',
 )
 
 MIDDLEWARE_CLASSES = (
+    'djangosecure.middleware.SecurityMiddleware',
     'django.middleware.gzip.GZipMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
