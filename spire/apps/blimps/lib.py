@@ -43,7 +43,11 @@ def auth_blimp_cert(domain, request_header, certificate):
 
     """
 
-    signed_domain = request_header['HTTP_X_AUTH_DOMAIN']
-    # TODO: implement this
+    client_cert_text = request_header["X-PROVIDED-CERT"]
+
+    logging.debug("Client provided cert:")
+    logging.debug(client_cert_text)
+    logging.debug("Stored cert:")
+    logging.debug(certificate)
 
     return True
