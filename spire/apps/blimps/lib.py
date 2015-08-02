@@ -7,6 +7,7 @@ import logging
 import string
 from random import sample, choice
 
+import sys
 import ssl
 from Crypto.Util.asn1 import DerSequence
 from Crypto.PublicKey import RSA
@@ -42,22 +43,29 @@ def generate_password(length=255):
 
 def auth_blimp_cert(domain, request_header, certificate):
     """use certificate (or a self-signed certificate request) to
-    check that the request_header contains a signed string equal to
-    domain.
+    check that the request_header contains same certificate as stored.
 
     """
 
-    client_cert_text = request_header.get("HTTP_X_PROVIDED_CERT", "nothing")
+    result = False
 
-    logging.debug("Client provided cert:")
-    logging.debug(client_cert_text)
-    logging.debug("Stored cert:")
-    logging.debug(certificate)
+    try:
+        client_cert_text = request_header.get("HTTP_X_PROVIDED_CERT")
 
-    client_pub_key = unwrap_public_key_from_cert(client_cert_text)
-    stored_pub_key = unwrap_public_key_from_cert(certificate)
+        logging.debug("Client provided cert:")
+        logging.debug(client_cert_text)
+        logging.debug("Stored cert:")
+        logging.debug(certificate)
 
-    return client_pub_key.n == stored_pub_key.n and client_pub_key.e == stored_pub_key.e
+        client_pub_key = unwrap_public_key_from_cert(client_cert_text)
+        stored_pub_key = unwrap_public_key_from_cert(certificate)
+
+        result = client_pub_key.n == stored_pub_key.n and client_pub_key.e == stored_pub_key.e
+    except:
+        logging.debug("Unexpected error: %s, %s, %s" % sys.exc_info())
+        result = False
+
+    return result
 
 def unwrap_public_key_from_cert(x509_cert):
     der = ssl.PEM_cert_to_DER_cert(x509_cert)
@@ -69,4 +77,3 @@ def unwrap_public_key_from_cert(x509_cert):
     subject_public_key_info = tbs_certificate[6]
     # Initialize RSA key
     return RSA.importKey(subject_public_key_info)
-
