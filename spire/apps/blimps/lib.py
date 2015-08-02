@@ -7,6 +7,10 @@ import logging
 import string
 from random import sample, choice
 
+import ssl
+from Crypto.Util.asn1 import DerSequence
+from Crypto.PublicKey import RSA
+
 import requests
 
 def notify_periscope_cert_ready(blimp):
@@ -43,11 +47,26 @@ def auth_blimp_cert(domain, request_header, certificate):
 
     """
 
-    client_cert_text = request_header["X-PROVIDED-CERT"]
+    client_cert_text = request_header.get("HTTP_X_PROVIDED_CERT", "nothing")
 
     logging.debug("Client provided cert:")
     logging.debug(client_cert_text)
     logging.debug("Stored cert:")
     logging.debug(certificate)
 
-    return True
+    client_pub_key = unwrap_public_key_from_cert(client_cert_text)
+    stored_pub_key = unwrap_public_key_from_cert(certificate)
+
+    return client_pub_key.n == stored_pub_key.n and client_pub_key.e == stored_pub_key.e
+
+def unwrap_public_key_from_cert(x509_cert):
+    der = ssl.PEM_cert_to_DER_cert(x509_cert)
+
+    cert = DerSequence()
+    cert.decode(der)
+    tbs_certificate = DerSequence()
+    tbs_certificate.decode(cert[0])
+    subject_public_key_info = tbs_certificate[6]
+    # Initialize RSA key
+    return RSA.importKey(subject_public_key_info)
+
