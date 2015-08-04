@@ -7,11 +7,11 @@ import logging
 import string
 from random import sample, choice
 import sys
-import ssl
 import base64
 
-from Crypto.Util.asn1 import DerSequence
-from Crypto.PublicKey import RSA
+from cryptography import x509
+from cryptography.hazmat.backends import default_backend
+
 import requests
 import scrypt
 
@@ -42,7 +42,7 @@ def generate_password(length=255):
     chars = string.ascii_letters + string.digits
     return ''.join(choice(chars) for _ in range(length))
 
-def auth_blimp_cert(domain, request_header, certificate):
+def auth_blimp_cert(domain, request_header, certificate_request):
     """use certificate (or a self-signed certificate request) to
     check that the request_header contains same certificate as stored.
 
@@ -51,32 +51,29 @@ def auth_blimp_cert(domain, request_header, certificate):
     result = False
 
     try:
-        client_cert_text = request_header.get("HTTP_X_PROVIDED_CERT")
+        client_cert_text = request_header.get("HTTP_X_PROVIDED_CERT").replace("\t", "")
 
         logging.debug("Client provided cert:")
         logging.debug(client_cert_text)
         logging.debug("Stored cert:")
-        logging.debug(certificate)
+        logging.debug(certificate_request)
 
         client_pub_key = unwrap_public_key_from_cert(client_cert_text)
-        stored_pub_key = unwrap_public_key_from_cert(certificate)
+        stored_pub_key = unwrap_public_key_from_csr(certificate_request)
 
-        result = client_pub_key.n == stored_pub_key.n and client_pub_key.e == stored_pub_key.e
+        result = client_pub_key.public_numbers() == stored_pub_key.public_numbers()
     except:
         logging.debug("Unexpected error: %s, %s, %s" % sys.exc_info())
         result = False
 
     return result
 
+
+def unwrap_public_key_from_csr(x509_csr):
+    return x509.load_pem_x509_csr(x509_csr.encode('utf-8'), default_backend()).public_key()
+
 def unwrap_public_key_from_cert(x509_cert):
-    der = ssl.PEM_cert_to_DER_cert(x509_cert)
-    cert = DerSequence()
-    cert.decode(der)
-    tbs_certificate = DerSequence()
-    tbs_certificate.decode(cert[0])
-    subject_public_key_info = tbs_certificate[6]
-    # Initialize RSA key
-    return RSA.importKey(subject_public_key_info)
+    return x509.load_pem_x509_certificate(x509_cert.encode('utf-8'), default_backend()).public_key()
 
 # functions recommended by the package author:
 # https://bitbucket.org/mhallin/py-scrypt/src

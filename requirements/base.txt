@@ -20,7 +20,7 @@ django-dotenv==1.2
 django-cors-headers==1.1.0
 django-flat-theme==0.9.5
 scrypt==0.7.1
-pycrypto==2.6.1
+cryptography==0.9.3
 
 # websocket stuff - work in progress
 #redis==2.10.1
