@@ -79,10 +79,21 @@ def request_cert(request, domain):
     @param domain: the domain of the blimp sending a certificate request
     @param cert_req: the blimp's certificate request string, in body as json
 
+    You'll need the certificate request:
+
+      openssl req -x509 -nodes -newkey rsa:4096 \
+        -keyout tls_key.pem \
+        -out tls_crt.pem \
+        -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=blimp.example.com && \
+      openssl req -new -sha256 \
+        -key tls_key.pem \
+        -out tls_req.pem \
+        -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=blimp.example.com
+
     Example:
 
         curl -H "Accept: application/json" \
-          -X POST -d '{"cert_req":"1234", "OTP":"1234"}' \
+          -X POST -d '{"cert_req":"'"$(cat tls_req.pem)"'", "OTP":"1234"}' \
           http://localhost:8000/api/v1/blimp/example.com/certificate/request
 
     """
@@ -115,7 +126,7 @@ def get_secret(request, domain):
     Example:
 
         curl -H "Accept: application/json" \
-          -H "X-AUTH-DOMAIN: domain_signed_with_cert_req" \
+          -H "X-PROVIDED-CERT: $(cat tls_req.pem)" \
           http://localhost:8000/api/v1/blimp/example.com/secret
 
     """
@@ -166,12 +177,12 @@ def get_certificate(request, domain):
 def auth(request, domain):
     """Get the blimp's secret.
 
-    Example:
+    Example (see how to generate the certificate request under request_cert):
 
         curl -H "Accept: application/json" \
           -H "X-AUTH-USERNAME: myuser" \
           -H "X-AUTH-PASSWORD: 1234" \
-          -H "X-AUTH-DOMAIN: domain_signed_with_cert_req" \
+          -H "X-PROVIDED-CERT: $(cat tls_req.pem)" \
           http://localhost:8000/api/v1/blimp/example.com/auth
 
     """

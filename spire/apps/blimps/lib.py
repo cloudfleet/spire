@@ -6,12 +6,12 @@ from urllib.parse import urljoin
 import logging
 import string
 from random import sample, choice
-
 import sys
 import ssl
+import base64
+
 from Crypto.Util.asn1 import DerSequence
 from Crypto.PublicKey import RSA
-
 import requests
 import scrypt
 
@@ -85,13 +85,13 @@ def unwrap_public_key_from_cert(x509_cert):
 # https://bitbucket.org/mhallin/py-scrypt/issues/20/
 
 def hash_password(password, maxtime=0.5, datalength=64):
-    return scrypt.encrypt(
+    return base64.b64encode(scrypt.encrypt(
         generate_password(datalength), password, maxtime=maxtime
-    ).decode('latin1') # because we want to store it in the DB as a CharField
+    )) # turn to string because we want to store it in the DB as a CharField
 
 def verify_password(hashed_password, guessed_password, maxtime=0.5):
     try:
-        scrypt.decrypt(str.encode(hashed_password, 'latin1'),
+        scrypt.decrypt(base64.b64decode(hashed_password),
                        guessed_password, maxtime)
         return True
     except scrypt.error:
