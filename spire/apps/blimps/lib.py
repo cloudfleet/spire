@@ -13,6 +13,7 @@ from Crypto.Util.asn1 import DerSequence
 from Crypto.PublicKey import RSA
 
 import requests
+import scrypt
 
 def notify_periscope_cert_ready(blimp):
     """HTTP POST to the physical blimp's public API subset (Periscope)
@@ -69,7 +70,6 @@ def auth_blimp_cert(domain, request_header, certificate):
 
 def unwrap_public_key_from_cert(x509_cert):
     der = ssl.PEM_cert_to_DER_cert(x509_cert)
-
     cert = DerSequence()
     cert.decode(der)
     tbs_certificate = DerSequence()
@@ -77,3 +77,22 @@ def unwrap_public_key_from_cert(x509_cert):
     subject_public_key_info = tbs_certificate[6]
     # Initialize RSA key
     return RSA.importKey(subject_public_key_info)
+
+# functions recommended by the package author:
+# https://bitbucket.org/mhallin/py-scrypt/src
+
+# it seems it's implicitly latin1, while this is not resolved:
+# https://bitbucket.org/mhallin/py-scrypt/issues/20/
+
+def hash_password(password, maxtime=0.5, datalength=64):
+    return scrypt.encrypt(
+        generate_password(datalength), password, maxtime=maxtime
+    ).decode('latin1') # because we want to store it in the DB as a CharField
+
+def verify_password(hashed_password, guessed_password, maxtime=0.5):
+    try:
+        scrypt.decrypt(str.encode(hashed_password, 'latin1'),
+                       guessed_password, maxtime)
+        return True
+    except scrypt.error:
+        return False

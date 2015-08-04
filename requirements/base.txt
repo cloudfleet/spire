@@ -19,6 +19,7 @@ django-braces==1.4.0
 django-dotenv==1.2
 django-cors-headers==1.1.0
 django-flat-theme==0.9.5
+scrypt==0.7.1
 
 # websocket stuff - work in progress
 #redis==2.10.1

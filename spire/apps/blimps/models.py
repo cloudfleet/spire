@@ -76,7 +76,7 @@ class Blimp(models.Model):
     owner = models.ForeignKey(User, null=True, blank=True)
     # the username & pw for logging into the physical blimp the first time
     username = models.CharField(max_length=255, blank=True)
-    password = models.CharField(max_length=255, blank=True) # hashed password
+    password = models.CharField(max_length=2047, blank=True) # hashed password
     # one-time password used in the blimp-spire communication workflow
     OTP = models.CharField(max_length=255, blank=True)
     # a shared secret accessible to the blimp, spire, mail relay and pagekite
@@ -201,6 +201,14 @@ class Blimp(models.Model):
             self.get_admin_url()
         )
         mail_admins(subject, message)
+
+    def hash_password(self):
+        """Hash self.password. Do this before storing instance to DB!"""
+        self.password = lib.hash_password(self.password)
+
+    def verify_password(self, password):
+        """If cleartext @param password matches the hashed password in the DB"""
+        return lib.verify_password(self.password, password)
 
     def generate_OTP(self):
         """Generate a one-time password (OTP). This is sent with the physical

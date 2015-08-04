@@ -37,6 +37,7 @@ def order_blimp(request):
         form = BlimpAPIForm(blimp_dict)
         if form.is_valid():
             blimp = form.save(commit=False) # extract model object from form
+            blimp.hash_password()
             blimp.generate_OTP()
             blimp.generate_secret()
             # TODO: send secret to pagekite & mail relay
@@ -181,7 +182,8 @@ def auth(request, domain):
             username = request.META['HTTP_X_AUTH_USERNAME']
             password = request.META['HTTP_X_AUTH_PASSWORD']
             if auth_blimp_cert(domain, request.META, blimp.cert_req):
-                if blimp.username == username and blimp.password == password:
+                if blimp.username == username and \
+                   blimp.verify_password(password):
                     status = 200
                     logging.debug('blimp auth OK')
                 else:
