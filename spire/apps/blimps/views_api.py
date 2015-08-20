@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import Blimp
 from .forms import BlimpAPIForm, BlimpAPICertificateRequestForm
-from .tasks import notify_admin
+from .tasks import notify_admin, create_pagekite_account
 from .lib import auth_blimp_cert
 
 def test_api(request):
@@ -40,8 +40,9 @@ def order_blimp(request):
             blimp.hash_password()
             blimp.generate_OTP()
             blimp.generate_secret()
-            # TODO: send secret to pagekite & mail relay
             blimp.save() # save the new blimp in the DB
+            # TODO: send secret to mail relay
+            create_pagekite_account.delay(blimp)
             notify_admin.delay(blimp) # start celery task to notify admins
             return HttpResponse()
         return HttpResponseBadRequest()

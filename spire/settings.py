@@ -90,6 +90,9 @@ if 'DATABASE_URL' in os.environ: # production environment
 
     BROKER_URL = os.environ["BROKER_URL"]
 
+    # pagekite.net configuration
+    PAGEKITE_ADMIN_PASSWORD = os.environ['PAGEKITE_ADMIN_PASSWORD']
+
 
 else: # development environment
     DEPLOYMENT = 'development'
@@ -115,6 +118,9 @@ else: # development environment
     #CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
     MEDIA_URL = '/media/'
+
+    PAGEKITE_ADMIN_PASSWORD = ''
+
 # Templates
 
 TEMPLATE_DIRS = (

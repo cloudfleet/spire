@@ -11,9 +11,11 @@ import base64
 
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
-
+from django.conf import settings
 import requests
 import scrypt
+
+from . import pagekite
 
 def notify_periscope_cert_ready(blimp):
     """HTTP POST to the physical blimp's public API subset (Periscope)
@@ -93,3 +95,13 @@ def verify_password(hashed_password, guessed_password, maxtime=0.5):
         return True
     except scrypt.error:
         return False
+
+
+def create_pagekite_account(blimp):
+    if settings.PAGEKITE_ADMIN_PASSWORD:
+        logging.info('creating pagekite account using the pagekite.net API')
+        pagekite.create_pagekite_account(
+            blimp.domain, settings.PAGEKITE_ADMIN_PASSWORD
+        )
+    else:
+        logging.info('no pagekite password, not notifiying API')
