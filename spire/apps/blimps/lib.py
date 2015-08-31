@@ -101,7 +101,7 @@ def create_pagekite_account(blimp):
     if settings.PAGEKITE_ADMIN_PASSWORD:
         logging.info('creating pagekite account using the pagekite.net API')
         pagekite.create_pagekite_account(
-            blimp.domain, settings.PAGEKITE_ADMIN_PASSWORD
+            blimp.domain, blimp.secret, settings.PAGEKITE_ADMIN_PASSWORD
         )
     else:
         logging.info('no pagekite password, not notifiying API')
