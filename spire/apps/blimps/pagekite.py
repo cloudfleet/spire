@@ -20,7 +20,9 @@ def create_pagekite_account(domain, domain_secret, admin_secret):
 
     # create some hopefully unique account name
     account = domain.replace('.', '-') + '.myblimp.net'
-    email = 'user+%s@myblimp.net'
+    # email = 'user+%s@myblimp.net'
+    # temporary solution until we have our own email with arbitrary suffixes
+    email = 'cloudfleetio+%s@gmail.com'
 
     # First we log in the admin account
     try:
