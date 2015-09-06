@@ -17,7 +17,7 @@ def error(msg):
 def create_pagekite_account(domain, domain_secret, admin_secret):
     # This is our XML-RPC proxy object
     pks = ServerProxy('https://pagekite.net/xmlrpc/')
-
+    import ipdb; ipdb.set_trace()
     # create some hopefully unique account name
     account = domain.replace('.', '-') + '.myblimp.net'
     # email = 'user+%s@myblimp.net'
@@ -49,13 +49,13 @@ def create_pagekite_account(domain, domain_secret, admin_secret):
             error('Sub-login failed')
 
     # set the account-wide shared secret
-    pks.set_account(a, c, '_ss', domain_secret)
+    rc, data = pks.set_account(a, c, '_ss', domain_secret)
     if (rc != 'ok'):
         error('set_account(...%s...) failed: %s' % (account, rc))
 
 
     # Make sure a kite exists for each of the domains we're configuring
-    for dom in ('blimp.{}'.format(domain)):
+    for dom in (['blimp.{}'.format(domain)]):
         rc, data = pks.add_kite(a, c, dom, False)
         if (rc != 'ok'): error('add_kite(%s) failed: %s' % (dom, rc))
         # set the per-kite shared secret
