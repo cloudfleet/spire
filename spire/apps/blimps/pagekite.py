@@ -17,7 +17,6 @@ def error(msg):
 def create_pagekite_account(domain, domain_secret, admin_secret):
     # This is our XML-RPC proxy object
     pks = ServerProxy('https://pagekite.net/xmlrpc/')
-    import ipdb; ipdb.set_trace()
     # create some hopefully unique account name
     account = domain.replace('.', '-') + '.myblimp.net'
     # email = 'user+%s@myblimp.net'
