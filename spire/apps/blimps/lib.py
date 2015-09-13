@@ -88,12 +88,14 @@ def hash_password(password, maxtime=0.5, datalength=64):
         generate_password(datalength), password, maxtime=maxtime
     )) # turn to string because we want to store it in the DB as a CharField
 
-def verify_password(hashed_password, guessed_password, maxtime=0.5):
+def verify_password(hashed_password, guessed_password, maxtime=3):
     try:
         scrypt.decrypt(base64.b64decode(hashed_password),
                        guessed_password, maxtime)
         return True
-    except scrypt.error:
+    except scrypt.error as error:
+        logging.error('incorrect password')
+        logging.error(error)
         return False
 
 
