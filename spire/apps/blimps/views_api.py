@@ -176,7 +176,7 @@ def get_certificate(request, domain):
 
 
 def auth(request, domain):
-    """Get the blimp's secret.
+    """Authenticate user of the blimp.
 
     Example (see how to generate the certificate request under request_cert):
 
