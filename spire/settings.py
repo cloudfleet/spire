@@ -1,5 +1,5 @@
 """
-Django settings for spire project.
+Django settings for project Spire.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -13,11 +13,8 @@ import os
 from sys import platform as _platform
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'b=-s+lqg2ghsgm9ikw)3+sv3bx-!tc6tr%h9cv4!%&7-2o%nt$'
+# Settings checked against:
+# https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # Application definition
 
@@ -69,9 +66,11 @@ DATABASES = {
 
 if 'DATABASE_URL' in os.environ: # production environment
     DEPLOYMENT = 'production'
-    DEBUG = True
-    TEMPLATE_DEBUG = True
+    DEBUG = False
+    TEMPLATE_DEBUG = False
     ALLOWED_HOSTS = ['*']
+    # secret key from an environment variable
+    SECRET_KEY = os.environ['SECRET_KEY']
     # DB config
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
@@ -98,6 +97,8 @@ else: # development environment
     DEPLOYMENT = 'development'
     DEBUG = True
     TEMPLATE_DEBUG = True
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = 'b=-s+lqg2ghsgm9ikw)3+sv3bx-!tc6tr%h9cv4!%&7-2o%nt$'
     # print e-mails to the console instead of sending them
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     import sys
