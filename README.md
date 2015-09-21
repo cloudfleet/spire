@@ -134,6 +134,10 @@ Install the production dependencies.
 
     pip install -r requirements/prod.txt
 
+Collect the static files.
+
+    ./manage.py collectstatic
+
 [runserver_plus]: http://django-extensions.readthedocs.org/en/latest/runserver_plus.html
 
 TODO
