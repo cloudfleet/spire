@@ -6,7 +6,6 @@ dj-database-url==0.3.0
 -e git+https://github.com/kennethreitz/dj-static.git@e73fa3bce00ac30b78218d60ece9efe931058a95#egg=dj_static-master
 celery==3.1.15
 django-registration-defaults==0.4.4
-docker-py==0.3.0
 Flask==0.10.1
 plumbum==1.4.1
 requests==2.6.0
@@ -20,7 +19,7 @@ django-dotenv==1.2
 django-cors-headers==1.1.0
 django-flat-theme==0.9.5
 scrypt==0.7.1
-cryptography==0.9.3
+cryptography
 
 # websocket stuff - work in progress
 #redis==2.10.1
