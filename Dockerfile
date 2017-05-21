@@ -5,3 +5,4 @@ WORKDIR /code
 ADD requirements.txt /code/
 RUN pip install -r requirements.txt
 ADD . /code/
+CMD gunicorn spire.wsgi --settings=spire.environment_settings.py --access-logfile - --log-file -
