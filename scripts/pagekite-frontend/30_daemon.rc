@@ -1,7 +1,0 @@
-#/ Systems administration settings:
-daemonize
-#runas=65534:65534
-pidfile=/var/run/pagekite.pid
-
-####[ End of pagekite.py configuration ]####
-END

@@ -1,9 +1,17 @@
-FROM python:3.5
+FROM alpine
+
 ENV PYTHONUNBUFFERED 1
+
 RUN mkdir /code
+
 WORKDIR /code
+
+RUN apk add py3-psycopg2
+
 ADD requirements.txt /code/
-ADD requirements /code/requirements
-RUN pip install -r requirements.txt
+
+RUN pip3 install -r requirements.txt
+
 ADD . /code/
-CMD gunicorn spire.wsgi --settings=spire.environment_settings.py --access-logfile - --log-file -
+
+CMD python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000
