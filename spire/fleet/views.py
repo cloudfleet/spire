@@ -13,7 +13,9 @@ from .lib import create_blimp, create_pagekite_account, update_blimp_kites
 def authorize_blimp(detail_route_function):
     def authorized_detail_route_function(self, request, *args, **kwds):
         blimp = self.get_object()
-        token = request.META.get("HTTP_AUTHORIZATION", "")[6:]
+        print("*" * 80)
+        print(request.META.get("HTTP_AUTHORIZATION", "")[7:])
+        token = request.META.get("HTTP_AUTHORIZATION", "")[7:]
         if blimp.check_pagekite_secret(token):
             return detail_route_function(self, request, *args, **kwds)
         else:
@@ -51,7 +53,7 @@ class BlimpViewSet(viewsets.GenericViewSet):
     def kites(self, request, domain=None):
         blimp = self.get_object()
 
-        update_blimp_kites(blimp, request.META["HTTP_AUTHORIZATION"][6:], request.data)
+        update_blimp_kites(blimp, request.META["HTTP_AUTHORIZATION"][7:], request.data)
 
 
     @transaction.atomic

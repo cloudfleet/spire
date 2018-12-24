@@ -19,7 +19,6 @@ def _get_server():
 
 def create_pagekite_account(domain, domain_secret, admin_secret):
     pagekite = _get_server()
-
     account_name = domain.replace('.', '-') + '.myblimp.net'
 
 
@@ -37,6 +36,7 @@ def create_pagekite_account(domain, domain_secret, admin_secret):
 
 def update_blimp_kites(domain, domain_secret, admin_secret, subdomains):
     pagekite = _get_server()
+    account_name = domain.replace('.', '-') + '.myblimp.net'
 
     _, (admin_account_id, admin_cred) = pagekite.login(ADMIN_ACCOUNT, admin_secret, '')
     _, (account_id, __) = pagekite.login(account_name, (admin_account_id, admin_cred), '')
