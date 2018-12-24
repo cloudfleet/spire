@@ -10,14 +10,14 @@ class Blimp(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     domain = models.CharField(max_length=100, unique=True)
     pagekite_secret = models.CharField(max_length=128)
-    passphrase_tracker = FieldTracker(fields=["pagekite_secret"])
+    pagekite_secret_tracker = FieldTracker(fields=["pagekite_secret"])
 
-    def check_pagekite_secret(pagekite_secret_plain):
-        return check_password(pagekite_secret_plain, pagekite_secret_hash)
+    def check_pagekite_secret(self, pagekite_secret_plain):
+        return check_password(pagekite_secret_plain, self.pagekite_secret_hash)
 
     def save(self, *args, **kwargs):
-        if self.passphrase_tracker.has_changed("pagekite_secret"):
-            self.passphrase = make_password(self.pagekite_secret)
+        if self.pagekite_secret_tracker.has_changed("pagekite_secret"):
+            self.pagekite_secret = make_password(self.pagekite_secret)
         super(Blimp, self).save(*args, **kwargs)
 
     def active_services(self):
