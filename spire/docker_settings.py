@@ -2,8 +2,8 @@ import os
 from .settings import *
 
 
-ALLOWED_HOSTS=[os.environ.keys('SPIRE_HOST')]
-DEBUG=os.environ.keys('DEBUG') == 'True'
+ALLOWED_HOSTS=[os.environ.get('SPIRE_HOST')]
+DEBUG=os.environ.get('DEBUG') == 'True'
 SECRET_KEY=os.environ.get('SECRET_KEY')
 DATABASES = {
     'default': {
