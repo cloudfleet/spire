@@ -13,7 +13,7 @@ from .lib import create_blimp, create_pagekite_account, update_blimp_kites
 def authorize_blimp(detail_route_function):
     def authorized_detail_route_function(self, request, *args, **kwds):
         blimp = self.get_object()
-        token = request.META["HTTP_AUTHORIZATION"][6:]
+        token = request.META.get("HTTP_AUTHORIZATION", "")[6:]
         if blimp.check_pagekite_secret(token):
             return detail_route_function(self, request, *args, **kwds)
         else:

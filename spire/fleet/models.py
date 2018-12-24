@@ -13,7 +13,7 @@ class Blimp(models.Model):
     pagekite_secret_tracker = FieldTracker(fields=["pagekite_secret"])
 
     def check_pagekite_secret(self, pagekite_secret_plain):
-        return check_password(pagekite_secret_plain, self.pagekite_secret_hash)
+        return check_password(pagekite_secret_plain, self.pagekite_secret)
 
     def save(self, *args, **kwargs):
         if self.pagekite_secret_tracker.has_changed("pagekite_secret"):
