@@ -6,7 +6,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route, list_route
 
-from .models import Blimp, Service
+from .models import Blimp, Service, Invite
 from .serializers import UserSerializer, GroupSerializer, BlimpSerializer
 from .lib import create_blimp, create_pagekite_account, update_blimp_kites
 
@@ -32,7 +32,7 @@ class BlimpViewSet(viewsets.GenericViewSet):
     lookup_value_regex = '[0-9a-z]+\.woolly\.social' #FIXME allow other domains for blimps
 
 
-    @detail_route(url_name='active-services', url_path='active-services')
+    @detail_route(url_path='active-services')
     def active_services(self, request, domain=None):
         blimp = self.get_object()
         return Response(blimp.active_services())
@@ -46,17 +46,16 @@ class BlimpViewSet(viewsets.GenericViewSet):
             return Response(status=403)
 
 
-    @detail_route(url_name='blimp_kites', url_path='kites', methods=["PUT"])
+    @detail_route(url_path='kites', methods=["PUT"])
     @authorize_blimp
-    def update_blimp_kites(self, request, domain=None):
+    def kites(self, request, domain=None):
         blimp = self.get_object()
 
         update_blimp_kites(blimp, request.META["HTTP_AUTHORIZATION"][6:], request.data)
 
 
     @transaction.atomic
-    @list_route(methods=["POST"])
-    def create_blimp(self, request):
+    def create(self, request):
         """pass in domain, secret, invite_code
 
         Example:
@@ -68,7 +67,18 @@ class BlimpViewSet(viewsets.GenericViewSet):
         """
         if request.method == 'POST':
             blimp_request_dict = request.data
-            blimp = create_blimp(blimp_request_dict["domain"], blimp_request_dict["secret"], blimp_request_dict["invite_code"])
+            domain = blimp_request_dict["domain"]
+            secret = blimp_request_dict["secret"]
+            invite_code = blimp_request_dict["invite_code"]
+
+            try:
+                invite = Invite.objects.get(code=invite_code, used_for=None)
+            except:
+                return Response('Invite code "%s" is not valid' % invite_code, status=403)
+            blimp = Blimp(domain=domain, pagekite_secret=secret)
+            blimp.save()
+            invite.used_for = blimp
+            invite.save()
             create_pagekite_account(blimp)
             return Response(BlimpSerializer(blimp).data)
 

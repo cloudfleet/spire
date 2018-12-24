@@ -9,7 +9,7 @@ import logging
 class Blimp(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     domain = models.CharField(max_length=100, unique=True)
-    pagekite_secret_hash = models.CharField(max_length=128)
+    pagekite_secret = models.CharField(max_length=128)
     passphrase_tracker = FieldTracker(fields=["pagekite_secret"])
 
     def check_pagekite_secret(pagekite_secret_plain):
