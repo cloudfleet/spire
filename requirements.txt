@@ -1,6 +1,6 @@
 certifi==2018.1.18
 chardet==3.0.4
-Django==2.1.4
+Django==2.2.10
 django-dotenv==1.4.2
 django-model-utils==3.0.0
 djangorestframework==3.7.7
