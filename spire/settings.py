@@ -26,7 +26,7 @@ SECRET_KEY = '+)hf1i)l#==zx*yj(b6n+z(px4v4@)&jp6v6#z$!v!e&it*&26'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -121,6 +121,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
 
 # pagekite.net configuration
 PAGEKITE_ADMIN_PASSWORD = os.environ.get('PAGEKITE_ADMIN_PASSWORD')

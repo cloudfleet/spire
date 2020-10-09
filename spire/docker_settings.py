@@ -2,7 +2,7 @@ import os
 from .settings import *
 
 
-ALLOWED_HOSTS=[os.environ.get('SPIRE_HOST')]
+ALLOWED_HOSTS=[os.environ.get('SPIRE_HOST'), 'localhost']
 DEBUG=os.environ.get('DEBUG') == 'True'
 SECRET_KEY=os.environ.get('SECRET_KEY')
 DATABASES = {

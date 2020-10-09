@@ -1,9 +1,13 @@
 # For development purposes
-version: '2'
+version: '3'
 
 services:
   db:
     image: postgres:11-alpine
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    env_file:
+      .env
   web:
     build: .
     volumes:
